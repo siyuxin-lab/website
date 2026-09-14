@@ -1,12 +1,71 @@
 ---
 title: "My First Blog Post"
-date: 2026-06-16
+date: 2026-09-12
 categories:
   - personal
   - data-science
 ---
 
 
-This is my first blog post. Example $\LaTeX$ equation: $\frac{1}{2}\sum_{i=1}^nx_i$
+This is my first blog post.
+library(ggplot2)
+library(dplyr)
 
+grid_df <- expand.grid(
+  x1 = seq(0.5, 22, length.out = 300),
+  x2 = seq(0.5, 12, length.out = 300)
+) %>%
+  mutate(U = log(x1) + log(x2))
+
+opt_x1 <- 10
+opt_x2 <- 5
+opt_U  <- log(opt_x1) + log(opt_x2)
+
+budget_df <- data.frame(
+  x1 = seq(0, 20, length.out = 100)
+) %>%
+  mutate(x2 = (40 - 2 * x1) / 4)
+
+grad_df <- data.frame(
+  x    = c(opt_x1, opt_x1),
+  y    = c(opt_x2, opt_x2),
+  xend = c(opt_x1 + 0.8, opt_x1 + 0.8),
+  yend = c(opt_x2 + 1.6, opt_x2 + 1.6),
+  Vector = c("Gradient of Utility", "Scaled Gradient of Constraint")
+)
+
+p <- ggplot() +
+  geom_contour(data = grid_df, aes(x = x1, y = x2, z = U),
+               breaks = seq(1.5, 5.5, by = 0.5), color = "lightblue", linewidth = 0.5) +
+  geom_contour(data = grid_df, aes(x = x1, y = x2, z = U),
+               breaks = opt_U, color = "blue", linewidth = 1.1) +
+  geom_line(data = budget_df, aes(x = x1, y = x2), 
+            color = "red", linewidth = 1.1) +
+  geom_segment(data = grad_df, aes(x = x, y = y, xend = xend, yend = yend, color = Vector),
+               arrow = arrow(length = unit(0.2, "cm")), linewidth = 1) +
+  geom_point(aes(x = opt_x1, y = opt_x2), color = "black", size = 3) +
+  annotate("text", x = opt_x1 + 1.2, y = opt_x2 - 0.5, 
+           label = "Optimal Bundle (10, 5)", fontface = "bold", size = 3.6) +
+  scale_color_manual(values = c("Gradient of Utility" = "blue", 
+                                "Scaled Gradient of Constraint" = "red")) +
+  coord_cartesian(xlim = c(0, 22), ylim = c(0, 12), expand = FALSE) +
+  labs(
+    title = "The Tangency Condition in Consumer Choice",
+    subtitle = "At the constrained optimum, the budget line is tangent to the indifference curve",
+    x = "Units of Good 1 (x1)",
+    y = "Units of Good 2 (x2)",
+    color = NULL,
+    caption = "Red line: Budget Constraint | Blue curves: Indifference Curves"
+  ) +
+  theme_minimal(base_size = 12) +
+  theme(
+    legend.position = "top",
+    plot.title = element_text(face = "bold"),
+    panel.grid.minor = element_blank()
+  )
+
+dir.create("figures", showWarnings = FALSE)
+ggsave("figures/lagrange_tangency.png", plot = p, width = 7.5, height = 5.5, dpi = 300)
+
+print(p)
 ---
