@@ -6,9 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2026-06-16">
+<meta name="dcterms.date" content="2026-09-12">
 
-<title>My First Blog Post – Student Name</title>
+<title>The Geometry of Scarcity: Demystifying Lagrange Multipliers – Student Name</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -151,7 +185,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">My First Blog Post</h1>
+<h1 class="title">The Geometry of Scarcity: Demystifying Lagrange Multipliers</h1>
   <div class="quarto-categories">
     <div class="quarto-category">personal</div>
     <div class="quarto-category">data-science</div>
@@ -166,7 +200,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">June 16, 2026</p>
+      <p class="date">September 12, 2026</p>
     </div>
   </div>
   
@@ -178,9 +212,90 @@ window.Quarto = {
 </header>
 
 
-<p><img src="figure1.png" class="img-fluid" width="500"></p>
-<p>This is my first blog post. Example <span class="math inline">\(\LaTeX\)</span> equation: <span class="math inline">\(\frac{1}{2}\sum_{i=1}^nx_i\)</span></p>
-<hr>
+<p>If you took multivariable calculus or intermediate microeconomics, you almost certainly ran into constrained optimization. Whether you were trying to maximize utility with a tight budget or minimize production costs subject to an output target, your professor probably gave you a standard recipe: take your objective function, set up an auxiliary equation with an extra variable <span class="math inline">\(\lambda\)</span>, take partial derivatives, set them to zero, and solve.</p>
+<p>When I first learned this, it felt like an arbitrary algebraic trick. Why does introducing a phantom variable suddenly turn a difficult constrained problem into a simple unconstrained one? And what on earth is <span class="math inline">\(\lambda\)</span> supposed to mean?</p>
+<p>To understand what the Lagrangian is actually doing, it helps to throw away the algebra for a moment and picture a topographic map.</p>
+<p>Imagine hiking up a hill. Your elevation at any point <span class="math inline">\((x_1, x_2)\)</span> is determined by the mountain’s height <span class="math inline">\(f(x_1, x_2)\)</span>, and you want to reach the highest possible point. But there is a catch: you are legally required to stay on a paved walking path given by the constraint <span class="math inline">\(g(x_1, x_2) = c\)</span>.</p>
+<p>Now, imagine walking along that path. If the path cuts across an elevation contour line at an angle, you are either going uphill or downhill. As long as the path continues to cross contour lines, you can gain elevation simply by taking another step forward.</p>
+<p>The only point where you cannot climb any higher while staying on the path is where the path runs perfectly parallel to an elevation contour line. At that exact point, stepping either forward or backward sends you downhill. The path and the contour line touch, sharing a single tangent.</p>
+<p>In vector calculus, the gradient vector <span class="math inline">\(\nabla f = (\frac{\partial f}{\partial x_1}, \frac{\partial f}{\partial x_2})\)</span> points in the direction of steepest ascent, which is always perpendicular to the contour lines. Similarly, <span class="math inline">\(\nabla g\)</span> is perpendicular to the path. Since the path and the contour line are tangent at the optimum, their perpendicular vectors must point in the exact same direction:</p>
+<p><span class="math display">\[\nabla f(x_1^*, x_2^*) = \lambda \nabla g(x_1^*, x_2^*)\]</span></p>
+<p>Here, <span class="math inline">\(\lambda\)</span> is not magic. It is simply the scalar multiplier that stretches or shrinks one gradient vector to match the length of the other. The Lagrangian function <span class="math inline">\(\mathcal{L}\)</span> is just an algebraic shorthand designed so its first-order conditions enforce this exact geometric tangency.</p>
+<p>The technique was originally developed in 1788 by Joseph-Louis Lagrange in his classic treatise <em>Mécanique Analytique</em>. Lagrange was solving physical problems, such as particles constrained to move along rigid surfaces. More than a century later, economists—most notably Paul Samuelson in his 1947 <em>Foundations of Economic Analysis</em>—realized that Lagrange had handed economics its most powerful mathematical tool. Economics, after all, is defined by scarcity.</p>
+<p>In economics, <span class="math inline">\(\lambda\)</span> earns a name of its own: the shadow price. By the Envelope Theorem:</p>
+<p><span class="math display">\[\lambda^* = \frac{\partial f^*(c)}{\partial c}\]</span></p>
+<p>This tells us that <span class="math inline">\(\lambda^*\)</span> measures the marginal increase in our maximized objective when the constraint is relaxed by one unit. In consumer choice, <span class="math inline">\(\lambda^*\)</span> is the marginal utility of income—how many extra utils you would get from an extra dollar of budget. In a firm’s cost-minimization problem, <span class="math inline">\(\lambda^*\)</span> is the marginal cost of producing one additional unit.</p>
+<p>To see this tangency clearly, we can simulate a standard consumer choice problem in R: maximizing <span class="math inline">\(U(x_1, x_2) = \ln(x_1) + \ln(x_2)\)</span> subject to <span class="math inline">\(2x_1 + 4x_2 = 40\)</span>. At the optimal bundle <span class="math inline">\((10, 5)\)</span>, the budget line is tangent to the indifference curve, and the gradient vectors point in identical directions.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>grid_df <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">x1 =</span> <span class="fu">seq</span>(<span class="fl">0.5</span>, <span class="dv">22</span>, <span class="at">length.out =</span> <span class="dv">300</span>),</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">x2 =</span> <span class="fu">seq</span>(<span class="fl">0.5</span>, <span class="dv">12</span>, <span class="at">length.out =</span> <span class="dv">300</span>)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">U =</span> <span class="fu">log</span>(x1) <span class="sc">+</span> <span class="fu">log</span>(x2))</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>opt_x1 <span class="ot">&lt;-</span> <span class="dv">10</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>opt_x2 <span class="ot">&lt;-</span> <span class="dv">5</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>opt_U  <span class="ot">&lt;-</span> <span class="fu">log</span>(opt_x1) <span class="sc">+</span> <span class="fu">log</span>(opt_x2)</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>budget_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">x1 =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">20</span>, <span class="at">length.out =</span> <span class="dv">100</span>)</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">x2 =</span> (<span class="dv">40</span> <span class="sc">-</span> <span class="dv">2</span> <span class="sc">*</span> x1) <span class="sc">/</span> <span class="dv">4</span>)</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>grad_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>  <span class="at">x    =</span> <span class="fu">c</span>(opt_x1, opt_x1),</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>  <span class="at">y    =</span> <span class="fu">c</span>(opt_x2, opt_x2),</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>  <span class="at">xend =</span> <span class="fu">c</span>(opt_x1 <span class="sc">+</span> <span class="fl">0.8</span>, opt_x1 <span class="sc">+</span> <span class="fl">0.8</span>),</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>  <span class="at">yend =</span> <span class="fu">c</span>(opt_x2 <span class="sc">+</span> <span class="fl">1.6</span>, opt_x2 <span class="sc">+</span> <span class="fl">1.6</span>),</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>  <span class="at">Vector =</span> <span class="fu">c</span>(<span class="st">"Gradient of Utility"</span>, <span class="st">"Scaled Gradient of Constraint"</span>)</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_contour</span>(<span class="at">data =</span> grid_df, <span class="fu">aes</span>(<span class="at">x =</span> x1, <span class="at">y =</span> x2, <span class="at">z =</span> U),</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>               <span class="at">breaks =</span> <span class="fu">seq</span>(<span class="fl">1.5</span>, <span class="fl">5.5</span>, <span class="at">by =</span> <span class="fl">0.5</span>), <span class="at">color =</span> <span class="st">"lightblue"</span>, <span class="at">linewidth =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_contour</span>(<span class="at">data =</span> grid_df, <span class="fu">aes</span>(<span class="at">x =</span> x1, <span class="at">y =</span> x2, <span class="at">z =</span> U),</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>               <span class="at">breaks =</span> opt_U, <span class="at">color =</span> <span class="st">"blue"</span>, <span class="at">linewidth =</span> <span class="fl">1.1</span>) <span class="sc">+</span></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">data =</span> budget_df, <span class="fu">aes</span>(<span class="at">x =</span> x1, <span class="at">y =</span> x2), </span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>            <span class="at">color =</span> <span class="st">"red"</span>, <span class="at">linewidth =</span> <span class="fl">1.1</span>) <span class="sc">+</span></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="at">data =</span> grad_df, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y, <span class="at">xend =</span> xend, <span class="at">yend =</span> yend, <span class="at">color =</span> Vector),</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>               <span class="at">arrow =</span> <span class="fu">arrow</span>(<span class="at">length =</span> <span class="fu">unit</span>(<span class="fl">0.2</span>, <span class="st">"cm"</span>)), <span class="at">linewidth =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x =</span> opt_x1, <span class="at">y =</span> opt_x2), <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, <span class="at">x =</span> opt_x1 <span class="sc">+</span> <span class="fl">1.2</span>, <span class="at">y =</span> opt_x2 <span class="sc">-</span> <span class="fl">0.5</span>, </span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>           <span class="at">label =</span> <span class="st">"Optimal Bundle (10, 5)"</span>, <span class="at">fontface =</span> <span class="st">"bold"</span>, <span class="at">size =</span> <span class="fl">3.6</span>) <span class="sc">+</span></span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"Gradient of Utility"</span> <span class="ot">=</span> <span class="st">"blue"</span>, </span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>                                <span class="st">"Scaled Gradient of Constraint"</span> <span class="ot">=</span> <span class="st">"red"</span>)) <span class="sc">+</span></span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_cartesian</span>(<span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">22</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">12</span>), <span class="at">expand =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"The Tangency Condition in Consumer Choice"</span>,</span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"At the constrained optimum, the budget line is tangent to the indifference curve"</span>,</span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Units of Good 1 (x1)"</span>,</span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Units of Good 2 (x2)"</span>,</span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="cn">NULL</span>,</span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">"Red line: Budget Constraint | Blue curves: Indifference Curves"</span></span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">12</span>) <span class="sc">+</span></span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.position =</span> <span class="st">"top"</span>,</span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>),</span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>()</span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.create</span>(<span class="st">"figures"</span>, <span class="at">showWarnings =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="st">"figures/lagrange_tangency.png"</span>, <span class="at">plot =</span> p, <span class="at">width =</span> <span class="fl">7.5</span>, <span class="at">height =</span> <span class="fl">5.5</span>, <span class="at">dpi =</span> <span class="dv">300</span>)</span>
+<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(p)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Untitled_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="768"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Lagrange multipliers are neither a bookkeeping gimmick nor arbitrary algebra. At its heart, the method is purely geometric: it finds the exact spot where level curves stop crossing the constraint and kiss it tangentially. In economics, this point of tangency does not just solve a math problem—it reveals the shadow price of scarcity itself.</p>
 
 
 
