@@ -304,7 +304,7 @@ theme_summary |>
 ```
 
 ::: {.callout-note}
-## Your read
+## Beyond the score: what the tool can't read
 
 The cyclical layer cuts the other way, and it's worth being precise about it.
 The Bank of Japan has genuinely started to normalise — it took its policy rate
