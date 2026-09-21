@@ -304,11 +304,27 @@ theme_summary |>
 ```
 
 ::: {.callout-note}
-## Your read (replace this before submitting)
-Add one or two sentences of your own interpretation here: given what you know
-about the current market, *why* is coverage clustering on `r top_theme`, and does
-the negative tone on `r most_neg_theme` match your own view? This is where the
-grade for "interpret your results" is won — delete this box once you've written it.
+## Your read
+
+The cyclical layer cuts the other way, and it's worth being precise about it.
+The Bank of Japan has genuinely started to normalise — it took its policy rate
+to 1% this year, the highest in three decades. That narrows the gap that makes
+the carry trade work. But narrowing is not closing: the rate differential is
+still roughly 250 basis points, and the Fed is skewed toward *hiking*, not
+cutting. So the carry trade isn't dead — it's just carrying more risk. It's a
+short-volatility position: it keeps paying a little every day until it very
+suddenly doesn't. Normalisation raises the odds of that violent exit without
+changing the fact that, today, the trade still pays.
+
+If I had to put on a view, I'd separate the two legs. On rates, I'd lean long
+Japanese government bonds — not because hikes are bullish for bonds (they
+aren't), but as a bet that the market has priced the tightening path too
+aggressively and the BoJ moves slower than that. On the currency, I'd still be
+short USD/JPY — long the yen — because the structural sellers and the eventual
+differential compression point the same way, and because after two
+interventions the one-way-bet quality of being short yen is gone. Two legs, one
+thesis: Japanese normalisation with the U.S.–Japan gap slowly closing.
+
 :::
 
 # Takeaway

@@ -8,7 +8,7 @@
 
 <meta name="dcterms.date" content="2026-09-16">
 
-<title>What Is the Market Talking About? A Sentiment Read from Financial Headlines – Student Name</title>
+<title>What Is the Market Talking About? A Sentiment Read from Financial Headlines – Siyu Xin</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -114,7 +114,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a class="navbar-brand" href="../../../index.html">
-    <span class="navbar-title">Student Name</span>
+    <span class="navbar-title">Siyu Xin</span>
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
@@ -525,11 +525,12 @@ Table&nbsp;1: Theme coverage and average tone, ordered by how much the market is
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Your read (replace this before submitting)
+Your read
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Add one or two sentences of your own interpretation here: given what you know about the current market, <em>why</em> is coverage clustering on AI &amp; Tech, and does the negative tone on Jobs &amp; Growth match your own view? This is where the grade for “interpret your results” is won — delete this box once you’ve written it.</p>
+<p>The cyclical layer cuts the other way, and it’s worth being precise about it. The Bank of Japan has genuinely started to normalise — it took its policy rate to 1% this year, the highest in three decades. That narrows the gap that makes the carry trade work. But narrowing is not closing: the rate differential is still roughly 250 basis points, and the Fed is skewed toward <em>hiking</em>, not cutting. So the carry trade isn’t dead — it’s just carrying more risk. It’s a short-volatility position: it keeps paying a little every day until it very suddenly doesn’t. Normalisation raises the odds of that violent exit without changing the fact that, today, the trade still pays.</p>
+<p>If I had to put on a view, I’d separate the two legs. On rates, I’d lean long Japanese government bonds — not because hikes are bullish for bonds (they aren’t), but as a bet that the market has priced the tightening path too aggressively and the BoJ moves slower than that. On the currency, I’d still be short USD/JPY — long the yen — because the structural sellers and the eventual differential compression point the same way, and because after two interventions the one-way-bet quality of being short yen is gone. Two legs, one thesis: Japanese normalisation with the U.S.–Japan gap slowly closing.</p>
 </div>
 </div>
 </section>
@@ -1323,34 +1324,50 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb8-322"><a href="#cb8-322" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb8-323"><a href="#cb8-323" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-324"><a href="#cb8-324" aria-hidden="true" tabindex="-1"></a>::: {.callout-note}</span>
-<span id="cb8-325"><a href="#cb8-325" aria-hidden="true" tabindex="-1"></a><span class="fu">## Your read (replace this before submitting)</span></span>
-<span id="cb8-326"><a href="#cb8-326" aria-hidden="true" tabindex="-1"></a>Add one or two sentences of your own interpretation here: given what you know</span>
-<span id="cb8-327"><a href="#cb8-327" aria-hidden="true" tabindex="-1"></a>about the current market, *why* is coverage clustering on <span class="in">`r top_theme`</span>, and does</span>
-<span id="cb8-328"><a href="#cb8-328" aria-hidden="true" tabindex="-1"></a>the negative tone on <span class="in">`r most_neg_theme`</span> match your own view? This is where the</span>
-<span id="cb8-329"><a href="#cb8-329" aria-hidden="true" tabindex="-1"></a>grade for "interpret your results" is won — delete this box once you've written it.</span>
-<span id="cb8-330"><a href="#cb8-330" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb8-331"><a href="#cb8-331" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-332"><a href="#cb8-332" aria-hidden="true" tabindex="-1"></a><span class="fu"># Takeaway</span></span>
-<span id="cb8-333"><a href="#cb8-333" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-334"><a href="#cb8-334" aria-hidden="true" tabindex="-1"></a>For anyone who writes a market update or positions around the day's narrative,</span>
-<span id="cb8-335"><a href="#cb8-335" aria-hidden="true" tabindex="-1"></a>this gives a fast, repeatable read: right now the market's attention is on</span>
-<span id="cb8-336"><a href="#cb8-336" aria-hidden="true" tabindex="-1"></a>**`r top_theme`**, and the nervousness is concentrated in **`r most_neg_theme`**.</span>
-<span id="cb8-337"><a href="#cb8-337" aria-hidden="true" tabindex="-1"></a>More importantly, the whole thing is *one reproducible pipeline* — re-render</span>
-<span id="cb8-338"><a href="#cb8-338" aria-hidden="true" tabindex="-1"></a>tomorrow and the snapshot, figures, and even these sentences update together,</span>
-<span id="cb8-339"><a href="#cb8-339" aria-hidden="true" tabindex="-1"></a>turning a subjective morning scan into a gauge you can track over time.</span>
-<span id="cb8-340"><a href="#cb8-340" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-341"><a href="#cb8-341" aria-hidden="true" tabindex="-1"></a>The method is deliberately simple — a word-count dictionary, not a trained model —</span>
-<span id="cb8-342"><a href="#cb8-342" aria-hidden="true" tabindex="-1"></a>so the honest caveat is that it reads *tone*, not *truth*: sarcasm, context, and</span>
-<span id="cb8-343"><a href="#cb8-343" aria-hidden="true" tabindex="-1"></a>magnitude are lost, and a small snapshot is noisy. But as a first-pass thermometer</span>
-<span id="cb8-344"><a href="#cb8-344" aria-hidden="true" tabindex="-1"></a>for market mood, a number beats a gut feeling, for one reason above all: you can</span>
-<span id="cb8-345"><a href="#cb8-345" aria-hidden="true" tabindex="-1"></a>compare it tomorrow.</span>
-<span id="cb8-346"><a href="#cb8-346" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-347"><a href="#cb8-347" aria-hidden="true" tabindex="-1"></a>---</span>
-<span id="cb8-348"><a href="#cb8-348" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-349"><a href="#cb8-349" aria-hidden="true" tabindex="-1"></a>*Data source: public RSS feeds from CNBC, MarketWatch, and Investing.com,</span>
-<span id="cb8-350"><a href="#cb8-350" aria-hidden="true" tabindex="-1"></a>collected on the date shown above and saved to <span class="in">`data/raw/`</span>. Sentiment scoring uses</span>
-<span id="cb8-351"><a href="#cb8-351" aria-hidden="true" tabindex="-1"></a>the Loughran-McDonald financial lexicon via the <span class="in">`tidytext`</span> package. All code to</span>
-<span id="cb8-352"><a href="#cb8-352" aria-hidden="true" tabindex="-1"></a>reproduce this analysis is in the linked GitHub repository.*</span>
+<span id="cb8-325"><a href="#cb8-325" aria-hidden="true" tabindex="-1"></a><span class="fu">## Your read</span></span>
+<span id="cb8-326"><a href="#cb8-326" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-327"><a href="#cb8-327" aria-hidden="true" tabindex="-1"></a>The cyclical layer cuts the other way, and it's worth being precise about it.</span>
+<span id="cb8-328"><a href="#cb8-328" aria-hidden="true" tabindex="-1"></a>The Bank of Japan has genuinely started to normalise — it took its policy rate</span>
+<span id="cb8-329"><a href="#cb8-329" aria-hidden="true" tabindex="-1"></a>to 1% this year, the highest in three decades. That narrows the gap that makes</span>
+<span id="cb8-330"><a href="#cb8-330" aria-hidden="true" tabindex="-1"></a>the carry trade work. But narrowing is not closing: the rate differential is</span>
+<span id="cb8-331"><a href="#cb8-331" aria-hidden="true" tabindex="-1"></a>still roughly 250 basis points, and the Fed is skewed toward *hiking*, not</span>
+<span id="cb8-332"><a href="#cb8-332" aria-hidden="true" tabindex="-1"></a>cutting. So the carry trade isn't dead — it's just carrying more risk. It's a</span>
+<span id="cb8-333"><a href="#cb8-333" aria-hidden="true" tabindex="-1"></a>short-volatility position: it keeps paying a little every day until it very</span>
+<span id="cb8-334"><a href="#cb8-334" aria-hidden="true" tabindex="-1"></a>suddenly doesn't. Normalisation raises the odds of that violent exit without</span>
+<span id="cb8-335"><a href="#cb8-335" aria-hidden="true" tabindex="-1"></a>changing the fact that, today, the trade still pays.</span>
+<span id="cb8-336"><a href="#cb8-336" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-337"><a href="#cb8-337" aria-hidden="true" tabindex="-1"></a>If I had to put on a view, I'd separate the two legs. On rates, I'd lean long</span>
+<span id="cb8-338"><a href="#cb8-338" aria-hidden="true" tabindex="-1"></a>Japanese government bonds — not because hikes are bullish for bonds (they</span>
+<span id="cb8-339"><a href="#cb8-339" aria-hidden="true" tabindex="-1"></a>aren't), but as a bet that the market has priced the tightening path too</span>
+<span id="cb8-340"><a href="#cb8-340" aria-hidden="true" tabindex="-1"></a>aggressively and the BoJ moves slower than that. On the currency, I'd still be</span>
+<span id="cb8-341"><a href="#cb8-341" aria-hidden="true" tabindex="-1"></a>short USD/JPY — long the yen — because the structural sellers and the eventual</span>
+<span id="cb8-342"><a href="#cb8-342" aria-hidden="true" tabindex="-1"></a>differential compression point the same way, and because after two</span>
+<span id="cb8-343"><a href="#cb8-343" aria-hidden="true" tabindex="-1"></a>interventions the one-way-bet quality of being short yen is gone. Two legs, one</span>
+<span id="cb8-344"><a href="#cb8-344" aria-hidden="true" tabindex="-1"></a>thesis: Japanese normalisation with the U.S.–Japan gap slowly closing.</span>
+<span id="cb8-345"><a href="#cb8-345" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-346"><a href="#cb8-346" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb8-347"><a href="#cb8-347" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-348"><a href="#cb8-348" aria-hidden="true" tabindex="-1"></a><span class="fu"># Takeaway</span></span>
+<span id="cb8-349"><a href="#cb8-349" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-350"><a href="#cb8-350" aria-hidden="true" tabindex="-1"></a>For anyone who writes a market update or positions around the day's narrative,</span>
+<span id="cb8-351"><a href="#cb8-351" aria-hidden="true" tabindex="-1"></a>this gives a fast, repeatable read: right now the market's attention is on</span>
+<span id="cb8-352"><a href="#cb8-352" aria-hidden="true" tabindex="-1"></a>**`r top_theme`**, and the nervousness is concentrated in **`r most_neg_theme`**.</span>
+<span id="cb8-353"><a href="#cb8-353" aria-hidden="true" tabindex="-1"></a>More importantly, the whole thing is *one reproducible pipeline* — re-render</span>
+<span id="cb8-354"><a href="#cb8-354" aria-hidden="true" tabindex="-1"></a>tomorrow and the snapshot, figures, and even these sentences update together,</span>
+<span id="cb8-355"><a href="#cb8-355" aria-hidden="true" tabindex="-1"></a>turning a subjective morning scan into a gauge you can track over time.</span>
+<span id="cb8-356"><a href="#cb8-356" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-357"><a href="#cb8-357" aria-hidden="true" tabindex="-1"></a>The method is deliberately simple — a word-count dictionary, not a trained model —</span>
+<span id="cb8-358"><a href="#cb8-358" aria-hidden="true" tabindex="-1"></a>so the honest caveat is that it reads *tone*, not *truth*: sarcasm, context, and</span>
+<span id="cb8-359"><a href="#cb8-359" aria-hidden="true" tabindex="-1"></a>magnitude are lost, and a small snapshot is noisy. But as a first-pass thermometer</span>
+<span id="cb8-360"><a href="#cb8-360" aria-hidden="true" tabindex="-1"></a>for market mood, a number beats a gut feeling, for one reason above all: you can</span>
+<span id="cb8-361"><a href="#cb8-361" aria-hidden="true" tabindex="-1"></a>compare it tomorrow.</span>
+<span id="cb8-362"><a href="#cb8-362" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-363"><a href="#cb8-363" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb8-364"><a href="#cb8-364" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-365"><a href="#cb8-365" aria-hidden="true" tabindex="-1"></a>*Data source: public RSS feeds from CNBC, MarketWatch, and Investing.com,</span>
+<span id="cb8-366"><a href="#cb8-366" aria-hidden="true" tabindex="-1"></a>collected on the date shown above and saved to <span class="in">`data/raw/`</span>. Sentiment scoring uses</span>
+<span id="cb8-367"><a href="#cb8-367" aria-hidden="true" tabindex="-1"></a>the Loughran-McDonald financial lexicon via the <span class="in">`tidytext`</span> package. All code to</span>
+<span id="cb8-368"><a href="#cb8-368" aria-hidden="true" tabindex="-1"></a>reproduce this analysis is in the linked GitHub repository.*</span>
 </code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
