@@ -267,6 +267,8 @@ theme_summary |>
   labs(x = "Number of headlines", y = NULL,
        title = "The market narrative, by theme") +
   theme_minimal(base_size = 12)
+
+
 ```
 
 Figure 2 turns from *how much* to *how it feels*. Overall net tone averages
@@ -291,6 +293,8 @@ theme_summary |>
   labs(x = "Average net tone  (positive − negative words per headline)", y = NULL,
        title = "Where is the negative tone concentrated?") +
   theme_minimal(base_size = 12)
+
+
 ```
 
 ```{r}
@@ -305,6 +309,9 @@ theme_summary |>
 
 ::: {.callout-note}
 ## Beyond the score: what the tool can't read
+While the automated scraper provides a quantitative headline pulse, it cannot decipher complex macro mechanics—such as policy divergences or cross-asset feedback loops. For example, while rates headlines may simply score as "negative" due to hiking language, real positioning requires evaluating cyclical nuance. 
+
+Consider the current dynamics around global rate differentials and the Japanese yen carry trade:
 
 The cyclical layer cuts the other way, and it's worth being precise about it.
 The Bank of Japan has genuinely started to normalise: it took its policy rate
@@ -344,7 +351,7 @@ compare it tomorrow.
 
 ---
 
-*Data source: public RSS feeds from CNBC, MarketWatch, and Investing.com,
+*Data source: public RSS feeds from CNBC, MarketWatch, Investing.com, and Bloomberg
 collected on the date shown above and saved to `data/raw/`. Sentiment scoring uses
 the Loughran-McDonald financial lexicon via the `tidytext` package. All code to
 reproduce this analysis is in the linked GitHub repository.*
