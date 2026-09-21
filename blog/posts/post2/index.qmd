@@ -332,3 +332,4 @@ compare it tomorrow.
 collected on the date shown above and saved to `data/raw/`. Sentiment scoring uses
 the Loughran-McDonald financial lexicon via the `tidytext` package. All code to
 reproduce this analysis is in the linked GitHub repository.*
+
