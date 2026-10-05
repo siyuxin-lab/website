@@ -1,3 +1,37 @@
+# Blog Post 4: The Burger Standard — What a Hamburger Says About Cheap and Dear Currencies
+
+For this post I used *The Economist's* Big Mac Index to ask which currencies a hamburger calls cheap or expensive against the US dollar — and whether that verdict survives once you account for how rich each country is. An exchange rate alone can't tell you if a currency is cheap; the Big Mac index answers it by comparing the price of the same burger across countries (a simple form of purchasing-power parity). The post builds the answer in three figures: a cheap-to-dear ranking, an income correction (the Balassa-Samuelson effect), and the Japanese yen's 25-year slide.
+
+All of the code and writing are in `blog/posts/post4/index.qmd`.
+
+The data are pulled programmatically from the official repository and then cached, so the analysis is fully reproducible from the saved snapshot.
+
+## Where to find everything
+
+- `blog/posts/post4/index.qmd` has the code and the blog post.
+- `blog/posts/post4/data/big-mac-full-index.csv` is the cached snapshot of the dataset (downloaded automatically on first render).
+- The three figures are generated at render time into `blog/posts/post4/index_files/`.
+
+## How to run the analysis
+
+Download the whole repository and open `website2.Rproj` in RStudio. You will need R and Quarto installed (Quarto ships with recent RStudio).
+
+If you have not installed the packages yet, run this in the R Console:
+
+```r
+install.packages(c("readr", "dplyr", "tidyr", "stringr", "ggplot2", "scales", "knitr", "here"))
+```
+
+Then open `blog/posts/post4/index.qmd` and click Render. On the first render the code downloads the dataset from the URL below and saves it to `data/`; on every later render it reads that saved copy, so results are reproducible offline. To re-pull fresh data, set `refresh <- TRUE` in the code.
+
+## Data source
+
+- **The Economist, Big Mac Index** — `TheEconomist/big-mac-data` on GitHub (MIT-licensed), read directly from its raw CSV:
+  `https://raw.githubusercontent.com/TheEconomist/big-mac-data/master/output-data/big-mac-full-index.csv`
+- Exchange rates and GDP-per-capita figures are those bundled in the dataset.
+
+The core transformation computes each currency's over/under-valuation as `(Big Mac price in USD) / (US Big Mac price) − 1`, which reproduces the Economist's raw index; the GDP-adjusted index corrects for income using the relationship shown in Figure 2.
+
 # Blog Post 3: Did Paychecks Keep Up? Real Wages Through the 2021–2024 Inflation Shock
 
 For this post I used IPUMS Current Population Survey (CPS) microdata to ask whether American workers' pay actually kept up with inflation during the 2021–2024 price surge. Nominal pay rose the whole time, but what matters is whether it beat prices — so I compute inflation-adjusted (real) hourly wages and look at them three ways: overall, by education, and across the wage distribution.
