@@ -38,7 +38,7 @@ options(scipen = 999)
 # The question
 
 Between 2021 and 2023 the United States lived through its sharpest burst of
-inflation in forty years — consumer prices rose about 8% in 2022 alone. Wages
+inflation in forty years: consumer prices rose about 8% in 2022 alone. Wages
 also rose over the same period, and headlines could point to "record pay
 increases" on any given month. But a raise only makes you better off if it beats
 the price of the things you buy. So the question that actually matters to a worker
@@ -47,7 +47,7 @@ is not *did my pay go up?* but **did my pay go up faster than prices?**
 This post uses U.S. Census microdata to answer that for the American workforce:
 **what happened to real (inflation-adjusted) hourly wages through the 2021–2024
 inflation shock, and did every kind of worker fare the same?** The three figures
-build the answer in layers — first the aggregate, then by education, then across
+build the answer in layers: first the aggregate, then by education, then across
 the wage distribution.
 
 # The data and how it is measured
@@ -62,7 +62,7 @@ Two measurement choices matter and are worth stating plainly:
 - **Hourly wage, not annual income.** Annual wage income mixes together how much
   someone earns *per hour* with how many hours they worked. To isolate the price
   of an hour of labour, I compute an hourly wage as
-  `INCWAGE / (WKSWORK1 × UHRSWORKLY)` — annual wage income divided by weeks worked
+  `INCWAGE / (WKSWORK1 × UHRSWORKLY)` : annual wage income divided by weeks worked
   times usual hours per week.
 - **Sampling weights.** The CPS is a *sample*, not a census, and each respondent
   stands in for a different number of real Americans. Every statistic below is
@@ -212,12 +212,12 @@ ggplot(agg_overall, aes(income_year, wage, colour = measure)) +
 ```
 
 The two lines tell opposite stories. In nominal terms the median hourly wage rose
-about **`r round(nom_growth)`%** from 2018 to 2024 — the "pay is rising" headline.
+about **`r round(nom_growth)`%** from 2018 to 2024: the "pay is rising" headline.
 But once we strip out inflation, the real median wage in 2022 was actually
 **`r sprintf('%+.1f', real_dip)`%** relative to 2018: the raises workers received
 were smaller than the price increases they faced, so purchasing power *fell* at the
 height of the inflation shock. By 2024 real wages had clawed back to about
-**`r sprintf('%+.1f', real_growth)`%** versus 2018 — a recovery, but a modest one
+**`r sprintf('%+.1f', real_growth)`%** versus 2018: a recovery, but a modest one
 spread over six years.
 
 Figure 2 asks *who* absorbed the squeeze, by splitting the real median wage by
@@ -241,7 +241,7 @@ ggplot(agg_educ, aes(income_year, real_median, colour = educ_group)) +
   theme(legend.position = "top")
 ```
 
-The levels are unsurprising — more schooling, higher pay — but the *shape* is the
+The levels are unsurprising, more schooling, higher pay. But the *shape* is the
 point: all four lines bend downward through 2021–2022 together. Inflation did not
 respect a diploma; it lowered real pay across the board before the partial
 recovery. That pushes the interesting question one level deeper: within the
@@ -291,7 +291,7 @@ further behind high-wage workers over the full period.
 
 The headline "wages are rising" was true and misleading at the same time. Nominal
 pay rose throughout, but the CPS microdata show that **real** median pay fell
-during 2021–2022 — workers' raises lost a race against prices — and only recovered
+during 2021–2022 (workers' raises lost a race against prices) and only recovered
 to modestly above its 2018 level by 2024. Splitting the workforce shows the squeeze
 was general: it hit every education group and ran across the wage distribution,
 rather than concentrating on one part of it.
