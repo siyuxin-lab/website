@@ -37,6 +37,8 @@ options(scipen = 999)
 dir.create(here("blog", "posts", "post4", "data"), showWarnings = FALSE, recursive = TRUE)
 ```
 
+
+
 # The question
 
 Exchange rates are supposed to tell you what a currency is worth, but on their own
@@ -70,6 +72,8 @@ $$\text{raw valuation} = \frac{\text{Big Mac price in USD}}{\text{US Big Mac pri
 A value of −0.40 means a currency's burger is 40% cheaper than America's. The
 currency is 40% "undervalued" against the dollar on this measure. That is the whole
 idea: purchasing-power parity, reduced to a sandwich.
+
+
 
 ```{r}
 #| label: load-data
@@ -127,11 +131,15 @@ jpy_2000   <- bmac |> filter(currency_code == "JPY") |> slice_min(date, n = 1)
 jpy_raw_00 <- jpy_2000$val_raw * 100
 ```
 
+
+
 # What the burger says
 
 As of **`r latest_lab`**, an American Big Mac costs about **$`r us_now`**, and the
 index covers **`r n_cur`** currencies. Figure 1 lines them all up from cheapest to
 dearest against the dollar.
+
+
 
 ```{r}
 #| label: fig-ranking
@@ -152,12 +160,16 @@ snap |>
   theme_minimal(base_size = 9)
 ```
 
+
+
 The spread is enormous: the **`r dearest$name`** franc looks roughly
 **`r round(dearest$val_raw*100)`%** too dear, while the
 **`r cheapest$name`** currency looks about **`r round(abs(cheapest$val_raw*100))`%**
 too cheap. Taken at face value, that would mean half the emerging world is running
 drastically "undervalued" currencies. But that face-value reading is a trap, and
 Figure 2 is where it springs.
+
+
 
 ```{r}
 #| label: fig-balassa
@@ -186,6 +198,8 @@ ggplot(snap_bs, aes(GDP_bigmac, val_raw)) +
   theme_minimal(base_size = 12)
 ```
 
+
+
 The line slopes up: richer countries really do have pricier burgers, because wages,
 rent and service costs (the non-traded ingredients) rise with income. Economists
 call this the Balassa-Samuelson effect, and it means a poor country's "undervalued"
@@ -202,6 +216,8 @@ burger survives the obvious objection: most of the cheapness is real.
 
 Figure 3 puts one currency on the clock, the Japanese yen, the FX story of the
 decade.
+
+
 
 ```{r}
 #| label: fig-jpy
@@ -225,6 +241,8 @@ bmac |>
   theme_minimal(base_size = 12) +
   theme(legend.position = "top")
 ```
+
+
 
 In 2000 the yen was actually **`r sprintf('%+.0f', jpy_raw_00)`%** *overvalued* on
 the burger — a dollar bought a cheap American lunch and an expensive Tokyo one. By
@@ -257,3 +275,4 @@ numbers don't speak until you make them comparable.
 MIT-licensed), read programmatically from its raw CSV and cached in `data/`.
 Exchange rates and GDP-per-capita figures are those bundled in the dataset. Code to
 reproduce the analysis is in the linked GitHub repository.*
+

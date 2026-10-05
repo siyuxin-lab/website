@@ -233,15 +233,15 @@ window.Quarto = {
 
 <section id="the-question" class="level1">
 <h1>The question</h1>
-<p>Exchange rates are supposed to tell you what a currency is worth, but on their own they tell you almost nothing about whether a currency is <em>cheap</em> or <em>expensive</em>. A dollar buys about 150 yen — is that a lot or a little? The only way to answer is to ask what the same thing costs in both places. In 1986 <em>The Economist</em> picked a gloriously simple “same thing”: a McDonald’s Big Mac, sold in nearly every country to roughly the same recipe. If a Big Mac costs far less in one country than in the US once you convert at the market exchange rate, that country’s currency looks <strong>undervalued</strong> — your dollars go further than they “should.”</p>
-<p>This post uses 25 years of <em>Economist</em> Big Mac data to ask a question that is sillier than it sounds and more serious than it looks: <strong>which currencies does a hamburger call cheap or dear — and does that verdict survive once you account for how rich each country is?</strong> The three figures build the answer, and the twist is in the second one.</p>
+<p>Exchange rates are supposed to tell you what a currency is worth, but on their own they tell you almost nothing about whether a currency is <em>cheap</em> or <em>expensive</em>. A dollar buys about 150 yen. Is that a lot or a little? The only way to answer is to ask what the same thing costs in both places. In 1986 <em>The Economist</em> picked a gloriously simple “same thing”: a McDonald’s Big Mac, sold in nearly every country to roughly the same recipe. If a Big Mac costs far less in one country than in the US once you convert at the market exchange rate, that country’s currency looks <strong>undervalued</strong>: your dollars go further than they “should.”</p>
+<p>This post uses 25 years of <em>Economist</em> Big Mac data to ask a question that is sillier than it sounds and more serious than it looks: <strong>which currencies does a hamburger call cheap or dear, and does that verdict survive once you account for how rich each country is?</strong> The three figures build the answer, and the twist is in the second one.</p>
 </section>
 <section id="the-data-and-the-one-transformation-that-matters" class="level1">
 <h1>The data and the one transformation that matters</h1>
-<p>The data come straight from <em>The Economist’s</em> public <a href="https://github.com/TheEconomist/big-mac-data">Big Mac repository</a> — read directly from its raw CSV URL, so the whole analysis is reproducible from code. It covers 54 currencies, twice a year, back to 2000.</p>
+<p>The data come straight from <em>The Economist’s</em> public <a href="https://github.com/TheEconomist/big-mac-data">Big Mac repository</a>. Reading directly from its raw CSV URL, so the whole analysis is reproducible from code. It covers 54 currencies, twice a year, back to 2000.</p>
 <p>The entire index rests on one small transformation. For each country I take the local Big Mac price, convert it to dollars at the market exchange rate, and compare it to the US price:</p>
 <p><span class="math display">\[\text{raw valuation} = \frac{\text{Big Mac price in USD}}{\text{US Big Mac price}} - 1\]</span></p>
-<p>A value of −0.40 means a currency’s burger is 40% cheaper than America’s — the currency is 40% “undervalued” against the dollar on this measure. That is the whole idea: purchasing-power parity, reduced to a sandwich.</p>
+<p>A value of −0.40 means a currency’s burger is 40% cheaper than America’s. The currency is 40% “undervalued” against the dollar on this measure. That is the whole idea: purchasing-power parity, reduced to a sandwich.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -308,7 +308,7 @@ Figure&nbsp;1: Big Mac over/under-valuation against the US dollar, latest snapsh
 </div>
 </div>
 </div>
-<p>The spread is enormous: the <strong>Switzerland</strong> franc looks roughly <strong>45%</strong> too dear, while the <strong>Indonesia</strong> currency looks about <strong>62%</strong> too cheap. Taken at face value, that would mean half the emerging world is running drastically “undervalued” currencies. But that face-value reading is a trap — and Figure 2 is where it springs.</p>
+<p>The spread is enormous: the <strong>Switzerland</strong> franc looks roughly <strong>45%</strong> too dear, while the <strong>Indonesia</strong> currency looks about <strong>62%</strong> too cheap. Taken at face value, that would mean half the emerging world is running drastically “undervalued” currencies. But that face-value reading is a trap, and Figure 2 is where it springs.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -339,15 +339,15 @@ Figure&nbsp;1: Big Mac over/under-valuation against the US dollar, latest snapsh
 <img src="index_files/figure-html/fig-balassa-1.png" class="img-fluid figure-img" width="720">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-balassa-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;2: The catch: richer countries have dearer burgers. Each point is a currency; the line is the average relationship. Points far below the line are cheap even for their income — genuinely undervalued — while points above are genuinely dear.
+Figure&nbsp;2: The catch: richer countries have dearer burgers. Each point is a currency; the line is the average relationship. Points far below the line are cheap even for their income (genuinely undervalued) while points above are genuinely dear.
 </figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p>The line slopes up: richer countries really do have pricier burgers, because wages, rent and service costs — the non-traded ingredients — rise with income. Economists call this the Balassa-Samuelson effect, and it means a poor country’s “undervalued” currency may be priced exactly right for how poor it is. So part of what Figure 1 calls cheapness is just income in disguise.</p>
-<p>But only <em>part</em>. The relationship is loose — the correlation between income and valuation is just <strong>0.23</strong>, a rise of about <strong>+2.1</strong> points per extra $10k of GDP per capita. Income nudges burger prices; it does not dictate them. The vertical distance from the line is the piece income <em>can’t</em> explain — the currency’s genuine mispricing, which is exactly what <em>The Economist’s</em> “GDP-adjusted” index measures. In other words, the burger survives the obvious objection: most of the cheapness is real.</p>
-<p>Figure 3 puts one currency on the clock — the Japanese yen, the FX story of the decade.</p>
+<p>The line slopes up: richer countries really do have pricier burgers, because wages, rent and service costs (the non-traded ingredients) rise with income. Economists call this the Balassa-Samuelson effect, and it means a poor country’s “undervalued” currency may be priced exactly right for how poor it is. So part of what Figure 1 calls cheapness is just income in disguise.</p>
+<p>But only <em>part</em>. The relationship is loose: the correlation between income and valuation is just <strong>0.23</strong>, a rise of about <strong>+2.1</strong> points per extra $10k of GDP per capita. Income nudges burger prices; it does not dictate them. The vertical distance from the line is the piece income <em>can’t</em> explain. The currency’s genuine mispricing, which is exactly what <em>The Economist’s</em> “GDP-adjusted” index measures. In other words, the burger survives the obvious objection: most of the cheapness is real.</p>
+<p>Figure 3 puts one currency on the clock, the Japanese yen, the FX story of the decade.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -380,12 +380,12 @@ Figure&nbsp;3: The yen against the dollar on the Big Mac index, raw and GDP-adju
 </div>
 </div>
 </div>
-<p>In 2000 the yen was actually <strong>+24%</strong> <em>overvalued</em> on the burger — a dollar bought a cheap American lunch and an expensive Tokyo one. By <strong>July 2026</strong> the same measure reads about <strong>-50%</strong> <em>undervalued</em>, the weakest in the 25-year series. The point that matters for an FX view is that the GDP-adjusted line sits almost on top of the raw one, at roughly <strong>-47%</strong>: Japan is a rich country, so Balassa-Samuelson says its burger <em>should</em> be expensive — yet the yen is cheap anyway. This is not a poor- country artifact. It is a genuinely, structurally weak currency, and a hamburger spotted it without reading a single central-bank statement.</p>
+<p>In 2000 the yen was actually <strong>+24%</strong> <em>overvalued</em> on the burger — a dollar bought a cheap American lunch and an expensive Tokyo one. By <strong>July 2026</strong> the same measure reads about <strong>-50%</strong> <em>undervalued</em>, the weakest in the 25-year series. The point that matters for an FX view is that the GDP-adjusted line sits almost on top of the raw one, at roughly <strong>-47%</strong>: Japan is a rich country, so Balassa-Samuelson says its burger <em>should</em> be expensive, yet the yen is cheap anyway. This is not a poor- country artifact. It is a genuinely, structurally weak currency, and a hamburger spotted it without reading a single central-bank statement.</p>
 </section>
 <section id="takeaway" class="level1">
 <h1>Takeaway</h1>
-<p>The Big Mac index is a joke that keeps being right. Reduced to one sandwich, purchasing-power parity produces a league table that mostly lines up with what FX strategists believe: the Swiss franc is expensive, emerging-market currencies are cheap, and the yen is historically, genuinely weak. The one discipline the burger demands is the Balassa-Samuelson correction in Figure 2 — without it you mistake <em>poor</em> for <em>cheap</em>; with it you can separate the two.</p>
-<p>The broader lesson is about transformation, not hamburgers. The raw data — a price and an exchange rate — say nothing on their own. One division turns them into a valuation; one scatter against income turns that valuation into an argument about what’s genuinely mispriced. That is the whole craft of this kind of analysis: the numbers don’t speak until you make them comparable.</p>
+<p>The Big Mac index is a joke that keeps being right. Reduced to one sandwich, purchasing-power parity produces a league table that mostly lines up with what FX strategists believe: the Swiss franc is expensive, emerging-market currencies are cheap, and the yen is historically, genuinely weak. The one discipline the burger demands is the Balassa-Samuelson correction in Figure 2, without it you mistake <em>poor</em> for <em>cheap</em>; with it you can separate the two.</p>
+<p>The broader lesson is about transformation, not hamburgers. The raw data (a price and an exchange rate) say nothing on their own. One division turns them into a valuation; one scatter against income turns that valuation into an argument about what’s genuinely mispriced. That is the whole craft of this kind of analysis: the numbers don’t speak until you make them comparable.</p>
 <hr>
 <p><em>Data source: The Economist, Big Mac Index (<code>TheEconomist/big-mac-data</code> on GitHub, MIT-licensed), read programmatically from its raw CSV and cached in <code>data/</code>. Exchange rates and GDP-per-capita figures are those bundled in the dataset. Code to reproduce the analysis is in the linked GitHub repository.</em></p>
 
@@ -909,23 +909,23 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb5-43"><a href="#cb5-43" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-44"><a href="#cb5-44" aria-hidden="true" tabindex="-1"></a>Exchange rates are supposed to tell you what a currency is worth, but on their own</span>
 <span id="cb5-45"><a href="#cb5-45" aria-hidden="true" tabindex="-1"></a>they tell you almost nothing about whether a currency is *cheap* or *expensive*. A</span>
-<span id="cb5-46"><a href="#cb5-46" aria-hidden="true" tabindex="-1"></a>dollar buys about 150 yen — is that a lot or a little? The only way to answer is to</span>
+<span id="cb5-46"><a href="#cb5-46" aria-hidden="true" tabindex="-1"></a>dollar buys about 150 yen. Is that a lot or a little? The only way to answer is to</span>
 <span id="cb5-47"><a href="#cb5-47" aria-hidden="true" tabindex="-1"></a>ask what the same thing costs in both places. In 1986 *The Economist* picked a</span>
 <span id="cb5-48"><a href="#cb5-48" aria-hidden="true" tabindex="-1"></a>gloriously simple "same thing": a McDonald's Big Mac, sold in nearly every country</span>
 <span id="cb5-49"><a href="#cb5-49" aria-hidden="true" tabindex="-1"></a>to roughly the same recipe. If a Big Mac costs far less in one country than in the</span>
 <span id="cb5-50"><a href="#cb5-50" aria-hidden="true" tabindex="-1"></a>US once you convert at the market exchange rate, that country's currency looks</span>
-<span id="cb5-51"><a href="#cb5-51" aria-hidden="true" tabindex="-1"></a>**undervalued** — your dollars go further than they "should."</span>
+<span id="cb5-51"><a href="#cb5-51" aria-hidden="true" tabindex="-1"></a>**undervalued**: your dollars go further than they "should."</span>
 <span id="cb5-52"><a href="#cb5-52" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-53"><a href="#cb5-53" aria-hidden="true" tabindex="-1"></a>This post uses 25 years of *Economist* Big Mac data to ask a question that is</span>
 <span id="cb5-54"><a href="#cb5-54" aria-hidden="true" tabindex="-1"></a>sillier than it sounds and more serious than it looks: **which currencies does a</span>
-<span id="cb5-55"><a href="#cb5-55" aria-hidden="true" tabindex="-1"></a>hamburger call cheap or dear — and does that verdict survive once you account for</span>
+<span id="cb5-55"><a href="#cb5-55" aria-hidden="true" tabindex="-1"></a>hamburger call cheap or dear, and does that verdict survive once you account for</span>
 <span id="cb5-56"><a href="#cb5-56" aria-hidden="true" tabindex="-1"></a>how rich each country is?** The three figures build the answer, and the twist is in</span>
 <span id="cb5-57"><a href="#cb5-57" aria-hidden="true" tabindex="-1"></a>the second one.</span>
 <span id="cb5-58"><a href="#cb5-58" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-59"><a href="#cb5-59" aria-hidden="true" tabindex="-1"></a><span class="fu"># The data and the one transformation that matters</span></span>
 <span id="cb5-60"><a href="#cb5-60" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-61"><a href="#cb5-61" aria-hidden="true" tabindex="-1"></a>The data come straight from *The Economist's* public [Big Mac</span>
-<span id="cb5-62"><a href="#cb5-62" aria-hidden="true" tabindex="-1"></a>repository](https://github.com/TheEconomist/big-mac-data) — read directly from its</span>
+<span id="cb5-62"><a href="#cb5-62" aria-hidden="true" tabindex="-1"></a>repository](https://github.com/TheEconomist/big-mac-data). Reading directly from its</span>
 <span id="cb5-63"><a href="#cb5-63" aria-hidden="true" tabindex="-1"></a>raw CSV URL, so the whole analysis is reproducible from code. It covers 54</span>
 <span id="cb5-64"><a href="#cb5-64" aria-hidden="true" tabindex="-1"></a>currencies, twice a year, back to 2000.</span>
 <span id="cb5-65"><a href="#cb5-65" aria-hidden="true" tabindex="-1"></a></span>
@@ -935,7 +935,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb5-69"><a href="#cb5-69" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-70"><a href="#cb5-70" aria-hidden="true" tabindex="-1"></a>$$\text{raw valuation} = \frac{\text{Big Mac price in USD}}{\text{US Big Mac price}} - 1$$</span>
 <span id="cb5-71"><a href="#cb5-71" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-72"><a href="#cb5-72" aria-hidden="true" tabindex="-1"></a>A value of −0.40 means a currency's burger is 40% cheaper than America's — the</span>
+<span id="cb5-72"><a href="#cb5-72" aria-hidden="true" tabindex="-1"></a>A value of −0.40 means a currency's burger is 40% cheaper than America's. The</span>
 <span id="cb5-73"><a href="#cb5-73" aria-hidden="true" tabindex="-1"></a>currency is 40% "undervalued" against the dollar on this measure. That is the whole</span>
 <span id="cb5-74"><a href="#cb5-74" aria-hidden="true" tabindex="-1"></a>idea: purchasing-power parity, reduced to a sandwich.</span>
 <span id="cb5-75"><a href="#cb5-75" aria-hidden="true" tabindex="-1"></a></span>
@@ -1024,12 +1024,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb5-164"><a href="#cb5-164" aria-hidden="true" tabindex="-1"></a>**`r round(dearest$val_raw*100)`%** too dear, while the</span>
 <span id="cb5-165"><a href="#cb5-165" aria-hidden="true" tabindex="-1"></a>**`r cheapest$name`** currency looks about **`r round(abs(cheapest$val_raw*100))`%**</span>
 <span id="cb5-166"><a href="#cb5-166" aria-hidden="true" tabindex="-1"></a>too cheap. Taken at face value, that would mean half the emerging world is running</span>
-<span id="cb5-167"><a href="#cb5-167" aria-hidden="true" tabindex="-1"></a>drastically "undervalued" currencies. But that face-value reading is a trap — and</span>
+<span id="cb5-167"><a href="#cb5-167" aria-hidden="true" tabindex="-1"></a>drastically "undervalued" currencies. But that face-value reading is a trap, and</span>
 <span id="cb5-168"><a href="#cb5-168" aria-hidden="true" tabindex="-1"></a>Figure 2 is where it springs.</span>
 <span id="cb5-169"><a href="#cb5-169" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-172"><a href="#cb5-172" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
 <span id="cb5-173"><a href="#cb5-173" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fig-balassa</span></span>
-<span id="cb5-174"><a href="#cb5-174" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: "The catch: richer countries have dearer burgers. Each point is a currency; the line is the average relationship. Points far below the line are cheap even for their income — genuinely undervalued — while points above are genuinely dear."</span></span>
+<span id="cb5-174"><a href="#cb5-174" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: "The catch: richer countries have dearer burgers. Each point is a currency; the line is the average relationship. Points far below the line are cheap even for their income (genuinely undervalued) while points above are genuinely dear."</span></span>
 <span id="cb5-175"><a href="#cb5-175" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 7.5</span></span>
 <span id="cb5-176"><a href="#cb5-176" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 5</span></span>
 <span id="cb5-177"><a href="#cb5-177" aria-hidden="true" tabindex="-1"></a></span>
@@ -1055,20 +1055,20 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb5-197"><a href="#cb5-197" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb5-198"><a href="#cb5-198" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-199"><a href="#cb5-199" aria-hidden="true" tabindex="-1"></a>The line slopes up: richer countries really do have pricier burgers, because wages,</span>
-<span id="cb5-200"><a href="#cb5-200" aria-hidden="true" tabindex="-1"></a>rent and service costs — the non-traded ingredients — rise with income. Economists</span>
+<span id="cb5-200"><a href="#cb5-200" aria-hidden="true" tabindex="-1"></a>rent and service costs (the non-traded ingredients) rise with income. Economists</span>
 <span id="cb5-201"><a href="#cb5-201" aria-hidden="true" tabindex="-1"></a>call this the Balassa-Samuelson effect, and it means a poor country's "undervalued"</span>
 <span id="cb5-202"><a href="#cb5-202" aria-hidden="true" tabindex="-1"></a>currency may be priced exactly right for how poor it is. So part of what Figure 1</span>
 <span id="cb5-203"><a href="#cb5-203" aria-hidden="true" tabindex="-1"></a>calls cheapness is just income in disguise.</span>
 <span id="cb5-204"><a href="#cb5-204" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-205"><a href="#cb5-205" aria-hidden="true" tabindex="-1"></a>But only *part*. The relationship is loose — the correlation between income and</span>
+<span id="cb5-205"><a href="#cb5-205" aria-hidden="true" tabindex="-1"></a>But only *part*. The relationship is loose: the correlation between income and</span>
 <span id="cb5-206"><a href="#cb5-206" aria-hidden="true" tabindex="-1"></a>valuation is just **`r round(bs_r, 2)`**, a rise of about</span>
 <span id="cb5-207"><a href="#cb5-207" aria-hidden="true" tabindex="-1"></a>**`r sprintf('%+.1f', bs_slope)`** points per extra $10k of GDP per capita. Income</span>
 <span id="cb5-208"><a href="#cb5-208" aria-hidden="true" tabindex="-1"></a>nudges burger prices; it does not dictate them. The vertical distance from the line</span>
-<span id="cb5-209"><a href="#cb5-209" aria-hidden="true" tabindex="-1"></a>is the piece income *can't* explain — the currency's genuine mispricing, which is</span>
+<span id="cb5-209"><a href="#cb5-209" aria-hidden="true" tabindex="-1"></a>is the piece income *can't* explain. The currency's genuine mispricing, which is</span>
 <span id="cb5-210"><a href="#cb5-210" aria-hidden="true" tabindex="-1"></a>exactly what *The Economist's* "GDP-adjusted" index measures. In other words, the</span>
 <span id="cb5-211"><a href="#cb5-211" aria-hidden="true" tabindex="-1"></a>burger survives the obvious objection: most of the cheapness is real.</span>
 <span id="cb5-212"><a href="#cb5-212" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-213"><a href="#cb5-213" aria-hidden="true" tabindex="-1"></a>Figure 3 puts one currency on the clock — the Japanese yen, the FX story of the</span>
+<span id="cb5-213"><a href="#cb5-213" aria-hidden="true" tabindex="-1"></a>Figure 3 puts one currency on the clock, the Japanese yen, the FX story of the</span>
 <span id="cb5-214"><a href="#cb5-214" aria-hidden="true" tabindex="-1"></a>decade.</span>
 <span id="cb5-215"><a href="#cb5-215" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-218"><a href="#cb5-218" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
@@ -1100,7 +1100,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb5-244"><a href="#cb5-244" aria-hidden="true" tabindex="-1"></a>*undervalued*, the weakest in the 25-year series. The point that matters for an FX</span>
 <span id="cb5-245"><a href="#cb5-245" aria-hidden="true" tabindex="-1"></a>view is that the GDP-adjusted line sits almost on top of the raw one, at roughly</span>
 <span id="cb5-246"><a href="#cb5-246" aria-hidden="true" tabindex="-1"></a>**`r round(jpy_adj_now)`%**: Japan is a rich country, so Balassa-Samuelson says its</span>
-<span id="cb5-247"><a href="#cb5-247" aria-hidden="true" tabindex="-1"></a>burger *should* be expensive — yet the yen is cheap anyway. This is not a poor-</span>
+<span id="cb5-247"><a href="#cb5-247" aria-hidden="true" tabindex="-1"></a>burger *should* be expensive, yet the yen is cheap anyway. This is not a poor-</span>
 <span id="cb5-248"><a href="#cb5-248" aria-hidden="true" tabindex="-1"></a>country artifact. It is a genuinely, structurally weak currency, and a hamburger</span>
 <span id="cb5-249"><a href="#cb5-249" aria-hidden="true" tabindex="-1"></a>spotted it without reading a single central-bank statement.</span>
 <span id="cb5-250"><a href="#cb5-250" aria-hidden="true" tabindex="-1"></a></span>
@@ -1110,11 +1110,11 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb5-254"><a href="#cb5-254" aria-hidden="true" tabindex="-1"></a>purchasing-power parity produces a league table that mostly lines up with what FX</span>
 <span id="cb5-255"><a href="#cb5-255" aria-hidden="true" tabindex="-1"></a>strategists believe: the Swiss franc is expensive, emerging-market currencies are</span>
 <span id="cb5-256"><a href="#cb5-256" aria-hidden="true" tabindex="-1"></a>cheap, and the yen is historically, genuinely weak. The one discipline the burger</span>
-<span id="cb5-257"><a href="#cb5-257" aria-hidden="true" tabindex="-1"></a>demands is the Balassa-Samuelson correction in Figure 2 — without it you mistake</span>
+<span id="cb5-257"><a href="#cb5-257" aria-hidden="true" tabindex="-1"></a>demands is the Balassa-Samuelson correction in Figure 2, without it you mistake</span>
 <span id="cb5-258"><a href="#cb5-258" aria-hidden="true" tabindex="-1"></a>*poor* for *cheap*; with it you can separate the two.</span>
 <span id="cb5-259"><a href="#cb5-259" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-260"><a href="#cb5-260" aria-hidden="true" tabindex="-1"></a>The broader lesson is about transformation, not hamburgers. The raw data — a price</span>
-<span id="cb5-261"><a href="#cb5-261" aria-hidden="true" tabindex="-1"></a>and an exchange rate — say nothing on their own. One division turns them into a</span>
+<span id="cb5-260"><a href="#cb5-260" aria-hidden="true" tabindex="-1"></a>The broader lesson is about transformation, not hamburgers. The raw data (a price</span>
+<span id="cb5-261"><a href="#cb5-261" aria-hidden="true" tabindex="-1"></a>and an exchange rate) say nothing on their own. One division turns them into a</span>
 <span id="cb5-262"><a href="#cb5-262" aria-hidden="true" tabindex="-1"></a>valuation; one scatter against income turns that valuation into an argument about</span>
 <span id="cb5-263"><a href="#cb5-263" aria-hidden="true" tabindex="-1"></a>what's genuinely mispriced. That is the whole craft of this kind of analysis: the</span>
 <span id="cb5-264"><a href="#cb5-264" aria-hidden="true" tabindex="-1"></a>numbers don't speak until you make them comparable.</span>
