@@ -227,7 +227,7 @@ bmac |>
 ```
 
 In 2000 the yen was actually **`r sprintf('%+.0f', jpy_raw_00)`%** *overvalued* on
-the burger — a dollar bought a cheap American lunch and an expensive Tokyo one. By
+the burger, a dollar bought a cheap American lunch and an expensive Tokyo one. By
 **`r latest_lab`** the same measure reads about **`r round(jpy_raw_now)`%**
 *undervalued*, the weakest in the 25-year series. The point that matters for an FX
 view is that the GDP-adjusted line sits almost on top of the raw one, at roughly
