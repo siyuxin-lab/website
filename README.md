@@ -1,3 +1,36 @@
+# Blog Post 7: When Inflation Came, Which Central Banks Were Caught Behind?
+
+For this post I used central bank policy rates and consumer-price inflation to ask a concrete question: as inflation surged in 2021–2023, which central banks kept their policy rate ahead of inflation and which fell "behind the curve" (a negative real rate), and how fast did they catch up? The answer is about movement over time, so it is told with an interactive Plotly chart (a year slider) rather than a static image.
+
+All of the code and writing are in `blog/posts/post7/index.qmd`.
+
+The data are pulled programmatically from source and then cached, so the analysis is fully reproducible from the saved files.
+
+## Where to find everything
+
+- `blog/posts/post7/index.qmd` has the code and the blog post.
+- `blog/posts/post7/data/bis_cbpol.csv` — cached central bank policy rates (downloaded on first render).
+- `blog/posts/post7/data/wdi_inflation.csv` — cached World Bank inflation series (downloaded on first render).
+- The two interactive figures are generated at render time into `blog/posts/post7/index_files/`.
+
+## How to run the analysis
+
+Download the whole repository and open `website2.Rproj` in RStudio. You will need R and Quarto installed.
+
+If you have not installed the packages yet, run this in the R Console:
+
+```r
+install.packages(c("readr", "dplyr", "tidyr", "stringr", "plotly", "WDI", "here", "htmlwidgets"))
+```
+
+Then open `blog/posts/post7/index.qmd` and click Render. On the first render the code downloads both datasets and saves them to `data/`; on every later render it reads those saved copies, so results are reproducible offline. To re-pull fresh data, set `refresh <- TRUE` in the code.
+
+## Data sources
+
+- **Central bank policy rates** — Bank for International Settlements, dataset `WS_CBPOL`, downloaded as the bulk CSV from `https://data.bis.org/static/bulk/WS_CBPOL_csv_flat.zip`. Each country's year-end rate is used.
+- **Inflation** — World Bank, consumer prices annual % (`FP.CPI.TOTL.ZG`), read through the `WDI` R package.
+
+The core transformation is the real policy rate = policy rate − inflation. A country is "behind the curve" when this is negative (its policy rate is below inflation). A few hyperinflation economies are kept off the 0–20% display scale for readability.
 # Blog Post 4: The Burger Standard — What a Hamburger Says About Cheap and Dear Currencies
 
 For this post I used *The Economist's* Big Mac Index to ask which currencies a hamburger calls cheap or expensive against the US dollar — and whether that verdict survives once you account for how rich each country is. An exchange rate alone can't tell you if a currency is cheap; the Big Mac index answers it by comparing the price of the same burger across countries (a simple form of purchasing-power parity). The post builds the answer in three figures: a cheap-to-dear ranking, an income correction (the Balassa-Samuelson effect), and the Japanese yen's 25-year slide.
