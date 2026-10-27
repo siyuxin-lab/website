@@ -1,0 +1,256 @@
+---
+title: "When Inflation Came, Which Central Banks Were Caught Behind?"
+author: "Siyu Xin"
+date: 2026-10-26
+categories:
+  - macro
+  - central banks
+  - interactive
+format:
+  html:
+    toc: true
+    toc-depth: 2
+    code-fold: true
+    code-tools: true
+    theme: cosmo
+execute:
+  warning: false
+  message: false
+---
+
+```{r}
+#| label: setup
+#| include: false
+
+library(readr)
+library(dplyr)
+library(tidyr)
+library(stringr)
+library(plotly)
+library(WDI)
+library(here)
+
+options(scipen = 999)
+dir.create(here("blog", "posts", "post7", "data"), showWarnings = FALSE, recursive = TRUE)
+```
+
+# The question
+
+When prices take off, a central bank has one basic lever: raise its policy
+interest rate faster than inflation, so that holding money actually costs
+something. When the rate stays *below* inflation, the "real" (inflation-adjusted)
+rate is negative — money is effectively free, and the bank is, in the market's
+phrase, **behind the curve**.
+
+The 2021–2023 inflation surge was the first worldwide test of that reflex in
+forty years. This post asks a simple, concrete question: **as inflation climbed,
+which central banks kept their policy rate ahead of it, and which fell behind — and
+how fast did they catch up?** One interactive chart answers it, because the answer
+is really about *movement* over time, which a single still image can't show.
+
+# The data
+
+Two series, both pulled straight from source in code:
+
+- **Policy rates** come from the Bank for International Settlements (BIS), which
+  collects the headline policy rate of about 38 central banks. I download the full
+  dataset as a single file and take each country's rate at year-end.
+- **Inflation** is annual consumer-price inflation from the World Bank (WDI
+  indicator `FP.CPI.TOTL.ZG`), read through the `WDI` package.
+
+The one transformation that matters is the **real policy rate = policy rate −
+inflation**. A country sits *above* the 45-degree line when its rate beats
+inflation (real rate positive); *below* it when inflation is winning (real rate
+negative).
+
+```{r}
+#| label: load-data
+
+refresh <- FALSE
+
+# --- Policy rates: BIS bulk file (download once, then cache) ----------------
+zip_path <- here("blog", "posts", "post7", "data", "cbpol.zip")
+bis_csv  <- here("blog", "posts", "post7", "data", "bis_cbpol.csv")
+
+if (!refresh && file.exists(bis_csv)) {
+  bis_raw <- read_csv(bis_csv, show_col_types = FALSE)
+} else {
+  download.file("https://data.bis.org/static/bulk/WS_CBPOL_csv_flat.zip",
+                zip_path, mode = "wb")
+  inner <- unzip(zip_path, list = TRUE)$Name[1]
+  unzip(zip_path, exdir = here("blog", "posts", "post7", "data"))
+  bis_raw <- read_csv(here("blog", "posts", "post7", "data", inner),
+                      show_col_types = FALSE)
+  write_csv(bis_raw, bis_csv)
+}
+
+# BIS columns carry colons/spaces, e.g. `REF_AREA:Reference area` = "US: United States".
+policy <- bis_raw |>
+  transmute(
+    freq    = `FREQ:Frequency`,
+    iso2c   = str_extract(`REF_AREA:Reference area`, "^[^:]+"),
+    period  = `TIME_PERIOD:Time period or range`,
+    rate    = as.numeric(`OBS_VALUE:Observation Value`)
+  ) |>
+  filter(str_detect(freq, "^M"), str_detect(period, "^[0-9]{4}-[0-9]{2}$")) |>
+  mutate(year = as.integer(str_sub(period, 1, 4)),
+         month = as.integer(str_sub(period, 6, 7))) |>
+  filter(!is.na(rate)) |>
+  group_by(iso2c, year) |>
+  slice_max(month, n = 1, with_ties = FALSE) |>   # year-end policy rate
+  ungroup() |>
+  select(iso2c, year, policy_rate = rate)
+
+# --- Inflation: World Bank via WDI (cache the same way) ---------------------
+wdi_csv <- here("blog", "posts", "post7", "data", "wdi_inflation.csv")
+if (!refresh && file.exists(wdi_csv)) {
+  infl <- read_csv(wdi_csv, show_col_types = FALSE)
+} else {
+  infl <- WDI(indicator = "FP.CPI.TOTL.ZG", start = 2010, end = 2025)
+  write_csv(infl, wdi_csv)
+}
+infl <- infl |>
+  transmute(iso2c, country, year = as.integer(year),
+            inflation = FP.CPI.TOTL.ZG)
+
+# --- Join, classify, and keep a readable window ----------------------------
+advanced <- c("US","JP","GB","CH","SE","NO","DK","CA","AU","NZ","KR","IL")
+
+panel <- policy |>
+  inner_join(infl, by = c("iso2c", "year")) |>
+  filter(!is.na(inflation), year >= 2015, year <= 2024) |>
+  filter(inflation <= 20, policy_rate <= 20) |>   # drop hyperinflation off-scale
+  mutate(
+    real_rate = policy_rate - inflation,
+    group = if_else(iso2c %in% advanced, "Advanced economy", "Emerging economy"),
+    hover = paste0("<b>", country, "</b>",
+                   "<br>Policy rate: ", sprintf("%.2f", policy_rate), "%",
+                   "<br>Inflation: ",   sprintf("%.2f", inflation), "%",
+                   "<br>Real rate: ",   sprintf("%+.2f", real_rate), "%")
+  )
+```
+
+```{r}
+#| label: prose-stats
+#| include: false
+
+n_banks   <- panel |> filter(year == 2024) |> distinct(iso2c) |> nrow()
+yrs       <- sort(unique(panel$year))
+
+behind <- panel |>
+  group_by(year) |>
+  summarise(n = n(), behind = sum(real_rate < 0), .groups = "drop") |>
+  mutate(share = behind / n)
+
+b2021 <- behind |> filter(year == 2021)
+b2022 <- behind |> filter(year == 2022)
+b2024 <- behind |> filter(year == 2024)
+
+share_pct <- function(x) paste0(round(100 * x), "%")
+```
+
+# The answer, in one moving chart
+
+Each dot is a central bank; drag the slider or press play to move through the
+years. The dashed line is where the policy rate exactly equals inflation. **Below
+the line, the real rate is negative — the bank is behind the curve.** Hover any dot
+to read the country and its exact numbers; click a legend entry to isolate advanced
+or emerging economies.
+
+```{r}
+#| label: fig-animated
+#| column: page
+
+ax <- list(range = c(-1, 20), zeroline = FALSE, ticksuffix = "%")
+diag <- data.frame(x = c(-1, 20), y = c(-1, 20))
+
+plot_ly() |>
+  add_lines(data = diag, x = ~x, y = ~y,
+            line = list(dash = "dash", color = "grey"),
+            hoverinfo = "skip", showlegend = FALSE) |>
+  add_markers(data = panel, x = ~inflation, y = ~policy_rate,
+              frame = ~year, color = ~group,
+              colors = c("Advanced economy" = "#2c7fb8",
+                         "Emerging economy" = "#c0392b"),
+              text = ~hover, hoverinfo = "text",
+              marker = list(size = 11, opacity = 0.8,
+                            line = list(width = 0.5, color = "white"))) |>
+  layout(
+    title = list(text = "Policy rate vs. inflation — below the line is behind the curve"),
+    xaxis = c(ax, list(title = "Inflation (%)")),
+    yaxis = c(ax, list(title = "Policy rate (%)")),
+    legend = list(orientation = "h", x = 0, y = 1.05)
+  ) |>
+  animation_opts(frame = 900, transition = 400, redraw = FALSE) |>
+  animation_slider(currentvalue = list(prefix = "Year: "))
+```
+
+The animation makes the common story visible as motion. Through 2015–2020 most
+dots sit near or above the line — quiet inflation, modestly positive real rates.
+Then in **2021** the whole cloud slides *down and to the right*: inflation jumped
+but policy rates hadn't moved, so **`r b2021$behind` of `r b2021$n`** central banks
+(`r share_pct(b2021$share)`) were below the line, real rates negative. By **2022**
+that was **`r b2022$behind` of `r b2022$n`** (`r share_pct(b2022$share)`) — nearly
+everyone behind the curve at once. The catch-up is just as clear: by **2024** the
+cloud has climbed back above the line, with only **`r b2024$behind` of `r b2024$n`**
+(`r share_pct(b2024$share)`) still negative.
+
+One group moved first. If you isolate the emerging economies in the legend, several
+Latin American banks (hover to find Brazil and Mexico) were already lifting rates
+in 2021, ahead of the Fed and the ECB. That ordering is the kind of detail a static
+snapshot hides and the slider surfaces.
+
+# Who caught up, and who sat still
+
+The second chart zooms in on the *real* policy rate — the vertical distance from
+that line — for five central banks over time. Hover to read values; click names in
+the legend to compare any subset.
+
+```{r}
+#| label: fig-realrate
+
+focus <- panel |>
+  filter(iso2c %in% c("US","GB","JP","BR","MX")) |>
+  mutate(country = recode(country, "United States" = "US",
+                          "United Kingdom" = "UK"))
+
+plot_ly(focus, x = ~year, y = ~real_rate, color = ~country,
+        type = "scatter", mode = "lines+markers",
+        hovertemplate = "%{fullData.name}<br>%{x}: %{y:+.2f}%<extra></extra>") |>
+  layout(
+    title = list(text = "Real policy rate (policy rate minus inflation)"),
+    xaxis = list(title = NULL, dtick = 1),
+    yaxis = list(title = "Real policy rate (%)", ticksuffix = "%", zeroline = TRUE),
+    shapes = list(list(type = "line", x0 = min(focus$year), x1 = max(focus$year),
+                       y0 = 0, y1 = 0, line = list(color = "grey", dash = "dot"))),
+    legend = list(orientation = "h", x = 0, y = 1.05)
+  )
+```
+
+Isolating Brazil shows the sharpest version of the pattern: a deeply negative real
+rate in 2021 followed by aggressive hikes that pushed it well above zero by 2023 —
+the textbook "get ahead of it" response. The US and UK lines stay below zero a year
+longer before climbing back. Japan barely moves: its inflation never rose far, so
+its real rate drifted without the dramatic dive-and-recover the others show.
+
+# Takeaway
+
+Across these central banks, 2021–2022 was a near-synchronized slip below the line —
+most of the world ran negative real policy rates at the same time — followed by a
+two-year climb back above it. The interactive view earns its keep here: the single
+number that matters, the gap between a policy rate and inflation, is one most
+readers can't picture from a table, but can read instantly as a dot's distance from
+a diagonal, and can watch move year by year.
+
+Two honest limits. Year-end annual figures smooth over the exact month each bank
+moved, so the chart shows the direction of the catch-up, not its precise timing.
+And a positive real rate is not automatically "enough" — how high rates must go
+depends on each economy, which this simple comparison doesn't judge.
+
+---
+
+*Data sources: central bank policy rates from the Bank for International
+Settlements (`WS_CBPOL`, bulk CSV, read programmatically and cached in `data/`);
+consumer-price inflation from the World Bank via the `WDI` package
+(`FP.CPI.TOTL.ZG`). A few hyperinflation cases are kept off the 0–20% scale for
+readability. Code to reproduce is in the linked GitHub repository.*
