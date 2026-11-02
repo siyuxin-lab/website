@@ -31,6 +31,60 @@ Then open `blog/posts/post7/index.qmd` and click Render. On the first render the
 - **Inflation** — World Bank, consumer prices annual % (`FP.CPI.TOTL.ZG`), read through the `WDI` R package.
 
 The core transformation is the real policy rate = policy rate − inflation. A country is "behind the curve" when this is negative (its policy rate is below inflation). A few hyperinflation economies are kept off the 0–20% display scale for readability.
+
+Blog Post 6: Like Parent, Like Child — Measuring Economic Mobility with SQL in Python
+
+A tutorial that matches parents to children with SQL (in Python), estimates the intergenerational elasticity of income (IGE), and shows why one year of income understates it while a multi-year average recovers it. The data are simulated with a known true IGE of 0.40, so the method's accuracy is visible directly.
+
+All of the code and writing are in blog/posts/post6/index.qmd.
+
+The analysis is fully self-contained: the panel is simulated in code with a fixed random seed, so there is no external data to download and every number reproduces exactly.
+
+Where to find everything
+blog/posts/post6/index.qmd has the code and the blog post.
+The two figures are generated at render time into blog/posts/post6/index_files/.
+How to run the analysis
+
+Download the whole repository and open website2.Rproj in RStudio. You will need R, Quarto, and Python (this post uses Python chunks; Anaconda's base environment already has what is needed).
+
+The post uses only standard scientific-Python packages — numpy, pandas, matplotlib, and the built-in sqlite3. If a render complains that Jupyter is missing, run once in a terminal:
+
+bash
+pip install jupyter
+
+Then open blog/posts/post6/index.qmd and click Render. Quarto runs the Python chunks, which simulate the panel, match parents to children with SQL, estimate the IGE, and draw the figures.
+
+Method and data
+
+The data are simulated: for each of 4,000 families a parent and a child are given a permanent (lifetime) income, linked by a true IGE of 0.40, plus year-to-year transitory noise. Parent–child matching uses sqlite3 (SELECT, JOIN ... ON family_id, GROUP BY, AVG); the IGE is the slope of a regression of child log income on parent log income, estimated with numpy.
+
+Blog Post 5: Where Is America's Money? The Geography of Household Income
+
+This post maps median household income by U.S. county to ask whether America's income geography is mostly a story of rich states versus poor states, or of divisions inside them. The central figure is a county choropleth; a within- vs between-state variance split shows most of the income gap is local.
+
+All of the code and writing are in blog/posts/post5/index.qmd.
+
+Where to find everything
+blog/posts/post5/index.qmd has the code and the blog post.
+blog/posts/post5/data/county_income.rds — cached county income + geometry (created on first render).
+The map is generated at render time into blog/posts/post5/index_files/.
+How to run the analysis
+
+Download the whole repository and open website2.Rproj in RStudio. You will need R and Quarto installed.
+
+Install the packages if needed:
+
+r
+install.packages(c("tidycensus", "dplyr", "stringr", "ggplot2", "scales", "sf", "here"))
+
+One-time Census API key (free, instant): request one at https://api.census.gov/data/key_signup.html, then in the R Console run census_api_key("YOUR_KEY", install = TRUE) and restart R. This is only needed to pull the data the first time.
+
+Then open blog/posts/post5/index.qmd and click Render. The first render pulls from the Census API and caches data/county_income.rds; later renders read that cache, so reproducing the map needs no key. Set refresh <- TRUE to re-pull fresh data.
+
+Data source
+
+U.S. Census Bureau, American Community Survey 2018–2022 five-year estimates, median household income (table B19013), retrieved with the tidycensus R package, which also supplies county boundaries. Alaska and Hawaii are repositioned with shift_geometry() for a national view.
+
 # Blog Post 4: The Burger Standard — What a Hamburger Says About Cheap and Dear Currencies
 
 For this post I used *The Economist's* Big Mac Index to ask which currencies a hamburger calls cheap or expensive against the US dollar — and whether that verdict survives once you account for how rich each country is. An exchange rate alone can't tell you if a currency is cheap; the Big Mac index answers it by comparing the price of the same burger across countries (a simple form of purchasing-power parity). The post builds the answer in three figures: a cheap-to-dear ranking, an income correction (the Balassa-Samuelson effect), and the Japanese yen's 25-year slide.
