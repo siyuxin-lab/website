@@ -31,6 +31,34 @@ Then open `blog/posts/post7/index.qmd` and click Render. On the first render the
 - **Inflation** — World Bank, consumer prices annual % (`FP.CPI.TOTL.ZG`), read through the `WDI` R package.
 
 The core transformation is the real policy rate = policy rate − inflation. A country is "behind the curve" when this is negative (its policy rate is below inflation). A few hyperinflation economies are kept off the 0–20% display scale for readability.
+
+Blog Post 5: Where Is America's Money? The Geography of Household Income
+
+This post maps median household income by U.S. county to ask whether America's income geography is mostly a story of rich states versus poor states, or of divisions inside them. The central figure is a county choropleth; a within- vs between-state variance split shows most of the income gap is local.
+
+All of the code and writing are in blog/posts/post5/index.qmd.
+
+Where to find everything
+blog/posts/post5/index.qmd has the code and the blog post.
+blog/posts/post5/data/county_income.rds — cached county income + geometry (created on first render).
+The map is generated at render time into blog/posts/post5/index_files/.
+How to run the analysis
+
+Download the whole repository and open website2.Rproj in RStudio. You will need R and Quarto installed.
+
+Install the packages if needed:
+
+r
+install.packages(c("tidycensus", "dplyr", "stringr", "ggplot2", "scales", "sf", "here"))
+
+One-time Census API key (free, instant): request one at https://api.census.gov/data/key_signup.html, then in the R Console run census_api_key("YOUR_KEY", install = TRUE) and restart R. This is only needed to pull the data the first time.
+
+Then open blog/posts/post5/index.qmd and click Render. The first render pulls from the Census API and caches data/county_income.rds; later renders read that cache, so reproducing the map needs no key. Set refresh <- TRUE to re-pull fresh data.
+
+Data source
+
+U.S. Census Bureau, American Community Survey 2018–2022 five-year estimates, median household income (table B19013), retrieved with the tidycensus R package, which also supplies county boundaries. Alaska and Hawaii are repositioned with shift_geometry() for a national view.
+
 # Blog Post 4: The Burger Standard — What a Hamburger Says About Cheap and Dear Currencies
 
 For this post I used *The Economist's* Big Mac Index to ask which currencies a hamburger calls cheap or expensive against the US dollar — and whether that verdict survives once you account for how rich each country is. An exchange rate alone can't tell you if a currency is cheap; the Big Mac index answers it by comparing the price of the same burger across countries (a simple form of purchasing-power parity). The post builds the answer in three figures: a cheap-to-dear ranking, an income correction (the Balassa-Samuelson effect), and the Japanese yen's 25-year slide.
