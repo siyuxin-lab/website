@@ -32,6 +32,32 @@ Then open `blog/posts/post7/index.qmd` and click Render. On the first render the
 
 The core transformation is the real policy rate = policy rate − inflation. A country is "behind the curve" when this is negative (its policy rate is below inflation). A few hyperinflation economies are kept off the 0–20% display scale for readability.
 
+Blog Post 6: Like Parent, Like Child — Measuring Economic Mobility with SQL in Python
+
+A tutorial that matches parents to children with SQL (in Python), estimates the intergenerational elasticity of income (IGE), and shows why one year of income understates it while a multi-year average recovers it. The data are simulated with a known true IGE of 0.40, so the method's accuracy is visible directly.
+
+All of the code and writing are in blog/posts/post6/index.qmd.
+
+The analysis is fully self-contained: the panel is simulated in code with a fixed random seed, so there is no external data to download and every number reproduces exactly.
+
+Where to find everything
+blog/posts/post6/index.qmd has the code and the blog post.
+The two figures are generated at render time into blog/posts/post6/index_files/.
+How to run the analysis
+
+Download the whole repository and open website2.Rproj in RStudio. You will need R, Quarto, and Python (this post uses Python chunks; Anaconda's base environment already has what is needed).
+
+The post uses only standard scientific-Python packages — numpy, pandas, matplotlib, and the built-in sqlite3. If a render complains that Jupyter is missing, run once in a terminal:
+
+bash
+pip install jupyter
+
+Then open blog/posts/post6/index.qmd and click Render. Quarto runs the Python chunks, which simulate the panel, match parents to children with SQL, estimate the IGE, and draw the figures.
+
+Method and data
+
+The data are simulated: for each of 4,000 families a parent and a child are given a permanent (lifetime) income, linked by a true IGE of 0.40, plus year-to-year transitory noise. Parent–child matching uses sqlite3 (SELECT, JOIN ... ON family_id, GROUP BY, AVG); the IGE is the slope of a regression of child log income on parent log income, estimated with numpy.
+
 Blog Post 5: Where Is America's Money? The Geography of Household Income
 
 This post maps median household income by U.S. county to ask whether America's income geography is mostly a story of rich states versus poor states, or of divisions inside them. The central figure is a county choropleth; a within- vs between-state variance split shows most of the income gap is local.
