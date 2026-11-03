@@ -1,0 +1,213 @@
+---
+title: "What Does \"95% Confident\" Actually Mean? Inference by Simulation"
+author: "Siyu Xin"
+date: 2026-11-02
+categories:
+  - statistics
+  - simulation
+  - interactive
+format:
+  html:
+    toc: true
+    toc-depth: 2
+    code-fold: true
+    code-tools: true
+    theme: cosmo
+execute:
+  warning: false
+  message: false
+---
+
+```{r}
+#| label: setup
+#| include: false
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(scales)
+library(plotly)
+set.seed(6400)
+options(scipen = 999)
+
+# A known population: right-skewed household incomes (lognormal).
+# Because we invent it, we know the TRUE mean exactly — the thing a real
+# analyst never gets to see, and the whole point of the demonstration.
+meanlog <- 10.8; sdlog <- 0.5
+true_mean <- exp(meanlog + sdlog^2 / 2)
+
+boot_mean <- function(x, B) replicate(B, mean(sample(x, length(x), replace = TRUE)))
+```
+
+# The question
+
+A survey reports an average, attaches a "95% confidence interval," and moves on.
+But what does that phrase actually promise? It is tempting to read it as "there's a
+95% chance the true average is in this range" — which is not quite what it means.
+This post uses simulation to show what it *does* mean, and then uses the same idea
+to explain how a hypothesis test, a p-value, and a "rejection region" work. One
+example runs through all of it: estimating the average household income in a town
+from a single sample of 50 households.
+
+# Where a confidence interval comes from: the bootstrap
+
+We have one sample of 50 incomes. We want the average, but a single number hides how
+much it would wobble if we had drawn a *different* 50 households. The **bootstrap**
+estimates that wobble using only the sample we have: draw a new sample of 50 *from
+our own sample, with replacement*, take its mean, and repeat thousands of times. The
+spread of those bootstrap means approximates the spread of the real sampling
+distribution.
+
+```{r}
+#| label: fig-bootstrap
+#| column: page
+
+big <- rlnorm(250, meanlog, sdlog)      # the data we could collect, in order
+ns  <- c(10, 25, 50, 100, 250)
+
+boot_df <- bind_rows(lapply(ns, function(nn) {
+  tibble(n = nn, boot_mean = boot_mean(big[1:nn], 2000))
+}))
+
+plot_ly(boot_df, x = ~boot_mean, frame = ~n, type = "histogram",
+        marker = list(color = "#2c7fb8", line = list(color = "white", width = 0.3))) |>
+  layout(
+    title = list(text = "Bootstrap distribution of the mean (drag the slider to add data)"),
+    xaxis = list(title = "Bootstrap sample mean", tickprefix = "$", range = c(30000, 95000)),
+    yaxis = list(title = "Count"),
+    shapes = list(list(type = "line", x0 = true_mean, x1 = true_mean,
+                       y0 = 0, y1 = 1, yref = "paper",
+                       line = list(color = "grey", dash = "dash")))
+  ) |>
+  animation_opts(frame = 1000, transition = 300, redraw = FALSE) |>
+  animation_slider(currentvalue = list(prefix = "Sample size n = "))
+```
+
+```{r}
+#| label: ci-stats
+#| include: false
+samp   <- big[1:50]
+bm50   <- boot_mean(samp, 5000)
+ci     <- quantile(bm50, c(0.025, 0.975))
+```
+
+The dashed line marks the true average, `r dollar(true_mean)` — which in real life you
+would never know. Drag the slider: with `n = 10` the bootstrap distribution is wide
+and the estimate is shaky; by `n = 250` it is tight and centered near the truth. More
+data does not change the method, only the *width* of what it produces. From our
+50-household sample, the middle 95% of bootstrap means runs from
+**`r dollar(ci[1])`** to **`r dollar(ci[2])`** — that interval is our 95% confidence
+interval for the average.
+
+# What "95%" is really a statement about
+
+Here is the subtlety. The 95% does not describe *our one* interval; it describes the
+*procedure*. If we repeated the whole exercise — draw 50 households, build a 95%
+interval — over and over, about 95% of those intervals would contain the true
+average, and some would miss. We can just do that.
+
+```{r}
+#| label: fig-coverage
+#| fig-cap: "Each horizontal line is a 95% confidence interval from a fresh sample of 50. Blue intervals contain the true average (vertical line); red ones miss. Across many repeats, close to 95% catch the truth."
+#| fig-width: 7.5
+#| fig-height: 5
+
+M <- 200
+cis <- t(replicate(M, {
+  s  <- rlnorm(50, meanlog, sdlog)
+  bm <- boot_mean(s, 1200)
+  quantile(bm, c(0.025, 0.975))
+}))
+cov_df <- tibble(id = 1:M, lo = cis[, 1], hi = cis[, 2],
+                 covers = lo <= true_mean & hi >= true_mean)
+coverage <- mean(cov_df$covers)
+
+cov_df |>
+  arrange((lo + hi) / 2) |>
+  mutate(rank = row_number()) |>
+  ggplot(aes(y = rank, color = covers)) +
+  geom_segment(aes(x = lo, xend = hi, yend = rank), linewidth = 0.4) +
+  geom_vline(xintercept = true_mean, color = "grey30") +
+  scale_color_manual(values = c(`TRUE` = "#2c7fb8", `FALSE` = "#c0392b"),
+                     labels = c(`TRUE` = "contains truth", `FALSE` = "misses"), name = NULL) +
+  scale_x_continuous(labels = label_dollar()) +
+  labs(x = "95% confidence interval", y = "Sample (sorted)",
+       title = "Most intervals catch the true mean — but not all") +
+  theme_minimal(base_size = 12) +
+  theme(axis.text.y = element_blank(), panel.grid.major.y = element_blank())
+```
+
+Out of `r M` intervals, **`r percent(coverage, accuracy = 1)`** contained the true
+average. That is what "95% confident" means: not a probability about the one interval
+in front of you, but the long-run hit rate of the recipe that made it. Any single
+interval either contains the truth or does not; the guarantee is about the method.
+
+# From intervals to tests: simulating the null
+
+The same resampling idea powers a hypothesis test. Suppose a report claims the town's
+average income is **`r dollar(65000)`**. Our sample averages well below that — but
+could that gap be chance? A test answers by asking: *if the claim were true, how often
+would random sampling produce a gap at least as large as the one we saw?*
+
+To simulate that world, we shift our sample so its mean equals the claimed
+`r dollar(65000)` — imposing the null hypothesis — then bootstrap it to build the
+distribution of sample means we'd expect *if the claim held*.
+
+```{r}
+#| label: fig-nulltest
+#| fig-cap: "The distribution of the sample mean if the claim ($65,000) were true. Our actual sample mean (black line) sits far out in the tail; the shaded area beyond it — in both directions — is the p-value. The red cut-offs mark the 5% rejection region."
+#| fig-width: 7.5
+#| fig-height: 4.5
+
+mu0     <- 65000
+obs     <- mean(samp)
+shifted <- samp - obs + mu0                 # impose the null: mean now = mu0
+null_means <- boot_mean(shifted, 5000)
+
+gap     <- abs(obs - mu0)
+pval    <- mean(abs(null_means - mu0) >= gap)
+cutoffs <- quantile(null_means, c(0.025, 0.975))
+verdict <- if (pval < 0.05) "reject" else "fail to reject"
+
+tibble(null_mean = null_means) |>
+  mutate(extreme = abs(null_mean - mu0) >= gap) |>
+  ggplot(aes(null_mean, fill = extreme)) +
+  geom_histogram(bins = 50, color = "white", linewidth = 0.1) +
+  geom_vline(xintercept = obs, linewidth = 0.9) +
+  geom_vline(xintercept = cutoffs, color = "#c0392b", linetype = "dashed") +
+  annotate("text", x = obs, y = Inf, label = "  observed mean", hjust = 0, vjust = 2, size = 3.5) +
+  scale_fill_manual(values = c(`FALSE` = "grey75", `TRUE` = "#2c7fb8"),
+                    labels = c(`FALSE` = "typical if claim true", `TRUE` = "as extreme (p-value)"),
+                    name = NULL) +
+  scale_x_continuous(labels = label_dollar()) +
+  labs(x = "Sample mean if the claim were true", y = "Count",
+       title = "Is the gap real, or just chance?") +
+  theme_minimal(base_size = 12)
+```
+
+The observed mean (`r dollar(obs)`) lands far out in the tail of the "if the claim were
+true" distribution. The shaded tail area — the share of simulated means at least as far
+from `r dollar(65000)` as ours — is the **p-value**, here **`r round(pval, 3)`**. The
+red lines are the **rejection region**: the outer 5% where a result is so unlikely under
+the claim that we stop believing the claim. Since the p-value is `r if (pval < 0.05) "below" else "above"`
+0.05, we **`r verdict`** the claim at the 5% level.
+
+# Takeaway
+
+Three ideas, one engine. Resampling our own data builds a confidence interval;
+repeating the experiment shows that "95%" is the hit rate of the *procedure*, not a
+fact about one interval; and resampling under an assumed claim turns a p-value into
+something you can see — a shaded tail, not a formula. Simulation does not replace the
+mathematics of inference, but it makes the mathematics legible: every abstract term
+here is just a picture of repeated sampling.
+
+One honest limit: the bootstrap leans on the sample being representative of the
+population, and for very small samples or very skewed data its intervals can run a
+little narrow — which is exactly why the coverage check above is worth running rather
+than assumed.
+
+---
+
+*This is a self-contained demonstration: the population and every sample are simulated
+in the code above with a fixed random seed, so all numbers and figures reproduce
+exactly, with no external data. The interactive figure is built with `plotly`; the
+rest use `ggplot2`.*
