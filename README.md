@@ -1,3 +1,29 @@
+#Blog Post 8: What Does "95% Confident" Actually Mean? Inference by Simulation
+
+This post uses simulation to explain statistical inference. It (1) builds a confidence interval by bootstrap resampling and shows the bootstrap distribution, (2) repeats the experiment many times to show that a 95% confidence interval contains the true parameter about 95% of the time, and (3) simulates the distribution of a test statistic under a null hypothesis to make the rejection region and p-value visible. The first figure is interactive (a slider varies the sample size).
+
+All of the code and writing are in blog/posts/post8/index.qmd.
+
+The analysis is fully self-contained: the population and every sample are simulated in code with a fixed random seed, so there is no external data to download and every number and figure reproduces exactly.
+
+Where to find everything
+blog/posts/post8/index.qmd has the code and the blog post.
+The figures (one interactive Plotly, two static ggplot) are generated at render time into blog/posts/post8/index_files/.
+How to run the analysis
+
+Download the whole repository and open website2.Rproj in RStudio. You will need R and Quarto installed.
+
+Install the packages if needed:
+
+r
+install.packages(c("dplyr", "tidyr", "ggplot2", "scales", "plotly"))
+
+Then open blog/posts/post8/index.qmd and click Render.
+
+Method
+
+A right-skewed "household income" population is simulated as a lognormal distribution, so its true mean is known. Confidence intervals use the bootstrap (percentile method); coverage is checked by repeating the sampling many times; the hypothesis test simulates the sampling distribution of the mean under the null by recentering the sample on the claimed value and bootstrapping it. The p-value is the share of simulated means at least as far from the claim as the observed mean.
+
 # Blog Post 7: When Inflation Came, Which Central Banks Were Caught Behind?
 
 For this post I used central bank policy rates and consumer-price inflation to ask a concrete question: as inflation surged in 2021–2023, which central banks kept their policy rate ahead of inflation and which fell "behind the curve" (a negative real rate), and how fast did they catch up? The answer is about movement over time, so it is told with an interactive Plotly chart (a year slider) rather than a static image.
@@ -32,7 +58,7 @@ Then open `blog/posts/post7/index.qmd` and click Render. On the first render the
 
 The core transformation is the real policy rate = policy rate − inflation. A country is "behind the curve" when this is negative (its policy rate is below inflation). A few hyperinflation economies are kept off the 0–20% display scale for readability.
 
-Blog Post 6: Like Parent, Like Child — Measuring Economic Mobility with SQL in Python
+#Blog Post 6: Like Parent, Like Child — Measuring Economic Mobility with SQL in Python
 
 A tutorial that matches parents to children with SQL (in Python), estimates the intergenerational elasticity of income (IGE), and shows why one year of income understates it while a multi-year average recovers it. The data are simulated with a known true IGE of 0.40, so the method's accuracy is visible directly.
 
@@ -58,7 +84,7 @@ Method and data
 
 The data are simulated: for each of 4,000 families a parent and a child are given a permanent (lifetime) income, linked by a true IGE of 0.40, plus year-to-year transitory noise. Parent–child matching uses sqlite3 (SELECT, JOIN ... ON family_id, GROUP BY, AVG); the IGE is the slope of a regression of child log income on parent log income, estimated with numpy.
 
-Blog Post 5: Where Is America's Money? The Geography of Household Income
+#Blog Post 5: Where Is America's Money? The Geography of Household Income
 
 This post maps median household income by U.S. county to ask whether America's income geography is mostly a story of rich states versus poor states, or of divisions inside them. The central figure is a county choropleth; a within- vs between-state variance split shows most of the income gap is local.
 
