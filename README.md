@@ -1,3 +1,45 @@
+# Blog Post 9: Can a Simpler Model Pick Better Stocks?
+
+Open **article.html** to read the complete English article offline. Editable versions are article.qmd (Quarto) and article.md (plain Markdown). Figures are in figures/, underlying data in data/, new analysis code in code/, and computed results in results/. No files were published or sent to anyone.
+
+This experiment studies tree depth, not an added relative-market-momentum signal. It independently selects a shallow model on pre-2024 validation observations. Both model portfolios use equal weights to isolate stock ranking. The original model is reproduced with its features and settings, but its leaking split and portfolio evaluation are corrected for both models.
+
+## Reproduce
+
+From the extracted folder:
+
+1. Install R and the packages with: `Rscript -e 'install.packages(c("dplyr","tidymodels","slider","xgboost","jsonlite"))'`.
+2. Run `Rscript code/run_all.R`. The included frozen CSV is sufficient; no account or API key is needed.
+3. Run `python code/verify.py` (Python standard library only).
+4. Install Matplotlib with `python -m pip install -r requirements.txt`, then run `python code/figures.py` and `python code/write_article.py`.
+5. With Quarto installed, run `quarto render article.qmd --to html`. The output embeds its figures and opens offline. The downloadable source and CSV links need the extracted folder; the browser's internet access is needed only for external references.
+
+Reference execution: R 4.6.2; xgboost 3.2.1.1; tidymodels 1.5.0; Python 3.14; Matplotlib 3.11.2. Exact R package details are in results/session_info.txt. Package upgrades can change numerical output.
+
+## Design and definitions
+
+- Price data: 95 course-selected stocks plus SPY, 1,218 trading sessions each, January 3, 2022 through November 9, 2026. Fields are symbol, date, open, high, low, close, volume and adjusted close, in USD. Provenance and input checksum are in data/provenance.json. Data were downloaded November 10, 2026 and frozen before this experiment. No prices from November 10 are used.
+- Predictor inputs match the supplied course model, including its inverse lagged-price ratio definitions. There is no relative-market-momentum feature. All lookbacks use data no later than the signal day's close. The order executes at the next close.
+- Target: adjusted close at t+20 divided by adjusted close at t+1 minus one (19 daily return intervals). This is the original forward target, not a calendar-month return.
+- Depth selection: candidates 1, 2, 3; lowest July-December 2023 validation RMSE wins, ties choose shallower. Early fitting uses only target end dates before July 1, 2023. Depth 5 is also evaluated on validation for reference, but cannot win the shallow-model selection. The final two models refit once on all eligible outcomes ending before January 1, 2024. Model settings otherwise stay fixed: 300 trees, learning rate .05, loss reduction 0, minimum node size 10, seed 123.
+- The first 126 sessions are lookback warm-up. Labels ending after available data are excluded. Final training has 33,725 rows, validation 10,070 rows, and testing 66,215 rows. Boundary dates and sample sizes are in results/audit.json.
+- Portfolio: first signal of each calendar month, buy ten top-ranked stocks at the next close and sell at t+20 close. Equal 10% weights; ties broken by ticker. These 34 windows do not overlap. The two benchmarks use precisely the same dates. Gains compound on exit; cash earns zero between windows. The window range is January 3, 2024 to October 29, 2026, shorter than the full date range of usable daily test signals.
+- Gross returns exclude costs. The optional 10 basis points (0.10%) per side scenario applies `(1-.001)^2 * (1+gross_return)-1` to each fully funded entry/exit window for every strategy. It does not assume continuous SPY holding or tax treatment.
+- Limitations: fixed universe can create selection/survivorship bias; Yahoo history is retrospectively adjusted, not a point-in-time tape; fewer than three test years and overlapping daily targets mean the 66,215 observations are not independent experiments. No significance or live trading profitability claim is made.
+
+## Sources and classroom context
+
+- [Instructor model on Penn Canvas](https://canvas.upenn.edu/courses/1942733/files?search_term=stock&preview=166069948); stock list and model settings are recorded in config.json. Original private source is not bundled.
+- [Class game results announcement](https://canvas.upenn.edu/courses/1942733/discussion_topics/11420590). Only a supplied aggregate (45 paired balances, 30 indicator wins) is described. No individual balances, names, or private classroom spreadsheets are included.
+- [tidyquant Yahoo Finance documentation](https://business-science.github.io/tidyquant/reference/tq_get.html).
+- [XGBoost tree-depth parameter](https://xgboost.readthedocs.io/en/stable/parameter.html).
+- [Gu, Kelly and Xiu, Empirical Asset Pricing via Machine Learning](https://www.nber.org/papers/w25398).
+
+## Before using on a personal blog
+
+The article has no author name because none was provided. Add the friend's name and have them review the classroom description and interpretation in their own voice. This is a complete local working package, not a public submission. Quarto sources, data and results can be placed in their own repository after review.
+
+
 #Blog Post 8: What Does "95% Confident" Actually Mean? Inference by Simulation
 
 This post uses simulation to explain statistical inference. It (1) builds a confidence interval by bootstrap resampling and shows the bootstrap distribution, (2) repeats the experiment many times to show that a 95% confidence interval contains the true parameter about 95% of the time, and (3) simulates the distribution of a test statistic under a null hypothesis to make the rejection region and p-value visible. The first figure is interactive (a slider varies the sample size).
