@@ -1,0 +1,54 @@
+---
+title: "Can a Simpler Model Pick Better Stocks?"
+author: "Siyu Xin"
+date: 2026-11-16
+categories:
+  - macro
+  - central banks
+  - interactive
+format:
+  html:
+    toc: true
+    toc-depth: 2
+    code-fold: true
+    code-tools: true
+execute:
+  warning: false
+  message: false
+---
+
+Suppose two stock models disagree. One predicts returns more accurately across hundreds of days. The other earns more money from the ten stocks it chooses each month. Which model improved? This question came up when I tested a smaller version of the stock-prediction model supplied in our course.
+
+The experiment asks whether limiting the complexity of XGBoost helps it select stocks. The answer depends on what “better” means: the smaller model reduced forecasting errors, while the original model produced the higher portfolio return.
+
+## Give the model fewer decisions
+
+The classroom stock game compared portfolios built from intuition with portfolios informed by indicators. The supplied results contain 45 paired final balances, with the indicator portfolio ahead in 30 pairs. That comparison motivates a more controlled experiment: hold the data and trading rules fixed, and change one feature of the forecasting method.
+
+The instructor's XGBoost model combines 300 decision trees. Each tree learns rules that try to correct the remaining prediction errors. The original maximum depth is five, allowing several successive decisions within a tree. I tried depths of one, two and three. [XGBoost's documentation](https://xgboost.readthedocs.io/en/stable/parameter.html) explains that deeper trees increase complexity and the risk of fitting noise.
+
+Financial returns contain plenty of noise. Unexpected news changes prices, and relationships found in one period can weaken later. Research by [Gu, Kelly and Xiu](https://www.nber.org/papers/w25398) identifies useful predictive signals but also discusses the difficulty of extracting them. Giving a model fewer opportunities to divide the data might help it avoid patterns that disappear.
+
+## Choose before opening the test
+
+I used the course's 95-stock list and SPY, with daily [Yahoo Finance prices](https://business-science.github.io/tidyquant/reference/tq_get.html) from January 2022 through November 9, 2026. Inputs and all other model settings follow the instructor's specification. The prediction target runs from the next trading day's closing price to the twentieth trading day's closing price after the signal.
+
+I first fitted each candidate using outcomes available before July 2023. July through December 2023 provided the validation period. Depth one had the lowest validation RMSE, 7.42 percentage points, so it became the selected model. I then refitted it and the original depth-five model using outcomes observed before 2024. This prevents training labels from reaching into the test period. No test return was used to choose depth.
+
+![Test RMSE on the same 66,215 stock-date observations. Lower bars indicate smaller forecast errors.](figures/test-errors.png){#fig-error fig-alt="Historical average RMSE is 8.88 percentage points; original depth five is 9.40; selected depth one is 8.97."}
+
+On the 2024-onward test, RMSE fell from 9.40 to 8.97 percentage points, about a 4.5% reduction. RMSE gives large errors extra weight. Even the smaller model remained worse than predicting the training-period average for every stock, which scored 8.88. The improvement is relative to the original model, not evidence that the forecast is especially accurate.
+
+The average benchmark offers no way to rank stocks because it assigns everyone the same forecast. It is useful here because a complicated model should first demonstrate that its changing predictions add information.
+
+## Follow the selected stocks
+
+For the investment comparison, each model held its ten highest-ranked stocks at equal weights. This common rule isolates changes in stock selection from differences in forecast size. Both portfolios, a 95-stock equal-weight benchmark and SPY used the same 34 entry and exit windows. They earned no interest while in cash between windows.
+
+![Portfolio values at the end of each holding window, starting with one dollar.](figures/investment-path.png){#fig-investment fig-alt="The original depth-five portfolio finishes near 2.00 dollars, depth one near 1.86, equal weighting near 1.62 and SPY near 1.56."}
+
+The original portfolio gained 100.2% before costs; the smaller model gained 86.4%. Equal weighting gained 61.9% and matched-window SPY gained 56.0%. An illustrative charge of 0.10% on every purchase and sale reduced the models' gains to 87.0% and 74.2%. These charges assume full entry and liquidation each window; they are a scenario, not measured brokerage costs.
+
+Reducing average errors does not guarantee a better ranking among the few stocks actually purchased. This sample favors the smaller model for forecasting accuracy and the original for investment returns. Neither comparison establishes a repeatable advantage: the stock list is fixed, prices are retrospectively adjusted, and the test covers fewer than three years. A fresh period would be needed before choosing a model for real investment.
+
+[Methods and reproduction](README.md) · [Forecast errors](results/prediction_metrics.csv) · [Portfolio results](results/portfolio_metrics.csv)
